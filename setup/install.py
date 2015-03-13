@@ -18,17 +18,23 @@ else:
         os.system("cd %s; virtualenv %s" % (ROOT_DIR, VENV_NAME))
 
 # install pip dependencies
-os.system("/bin/bash -c 'source %s/%s; pip install ipython[notebook]'" %
-          (VENV_FOLDER, "bin/activate"))
+os.system("/bin/bash -c 'cd %s; source %s; pip install ipython[notebook]'" %
+          (ROOT_DIR, "env.sh"))
 
 # install mathjax
-os.system("/bin/bash -c 'source %s/%s; python -m IPython.external.mathjax'" %
-          (VENV_FOLDER, "bin/activate"))
+os.system("/bin/bash -c 'cd %s; source %s; python -m IPython.external.mathjax'" %
+          (ROOT_DIR, "env.sh"))
 
 # install pandoc to export to pdf
 os.system("sudo apt-get -y install pandoc")
 
 
+# upgrade distribute
+os.system("/bin/bash -c 'cd %s; source %s; pip install distribute --upgrade'" %
+          (ROOT_DIR, "env.sh"))
 
-#
-# create
+# install matplotlib
+os.system("sudo apt-get -y install libfreetype6-dev libpng12-dev")
+os.system("/bin/bash -c 'cd %s; source %s; pip install matplotlib'" %
+          (ROOT_DIR, "env.sh"))
+
