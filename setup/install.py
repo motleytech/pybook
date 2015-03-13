@@ -12,17 +12,17 @@ if not os.path.isdir(VENV_FOLDER):
     os.system("rm -rf %s" % VENV_FOLDER)
     os.system("cd %s; virtualenv %s" % (ROOT_DIR, VENV_NAME))
 else:
-    answer = raw_input("%s exists. Delete and recreate? (y/n)")
+    answer = raw_input("%s exists. Delete and recreate? (y/n)" % VENV_FOLDER)
     if answer.strip() == 'y':
         os.rmdir(VENV_FOLDER)
         os.system("cd %s; virtualenv %s" % (ROOT_DIR, VENV_NAME))
 
 # install pip dependencies
-os.system("source %s/%s; pip install ipython[notebook]" %
+os.system("/bin/bash -c 'source %s/%s; pip install ipython[notebook]'" %
           (VENV_FOLDER, "bin/activate"))
 
 # install mathjax
-os.system("source %s/%s; python -m IPython.external.mathjax" %
+os.system("/bin/bash -c 'source %s/%s; python -m IPython.external.mathjax'" %
           (VENV_FOLDER, "bin/activate"))
 
 # install pandoc to export to pdf
