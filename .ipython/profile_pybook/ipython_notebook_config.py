@@ -1,4 +1,5 @@
 # Configuration file for ipython-notebook.
+import os
 
 c = get_config()
 
@@ -104,7 +105,8 @@ c.NotebookApp.allow_origin = '*'
 # c.NotebookApp.tornado_settings = {}
 
 # The directory to use for notebooks and kernels.
-# c.NotebookApp.notebook_dir = u''
+c.NotebookApp.notebook_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                          "../../books")
 
 # The kernel manager class to use.
 # c.NotebookApp.kernel_manager_class = <class 'IPython.html.services.kernels.kernelmanager.MappingKernelManager'>

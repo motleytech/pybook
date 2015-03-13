@@ -1,2 +1,4 @@
 venv/*
 .ipython/nbextensions
+.ipython/profile_pybook/history.sqlite
+.ipython/profile_pybook/security
