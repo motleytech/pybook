@@ -106,7 +106,7 @@ c.NotebookApp.allow_origin = '*'
 
 # The directory to use for notebooks and kernels.
 c.NotebookApp.notebook_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                          "../../books")
+                                          "../../books/")
 
 # The kernel manager class to use.
 # c.NotebookApp.kernel_manager_class = <class 'IPython.html.services.kernels.kernelmanager.MappingKernelManager'>
