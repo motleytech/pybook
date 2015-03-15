@@ -1,6 +1,9 @@
 # Configuration file for ipython-notebook.
 import os
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "../../"))
+
 c = get_config()
 
 #------------------------------------------------------------------------------
@@ -53,7 +56,7 @@ c.NotebookApp.open_browser = False
 # c.NotebookApp.log_datefmt = '%Y-%m-%d %H:%M:%S'
 
 # The port the notebook server will listen on.
-# c.NotebookApp.port = 8888
+c.NotebookApp.port = 7143
 
 # Whether to overwrite existing config files when copying
 # c.NotebookApp.overwrite = False
@@ -87,7 +90,8 @@ c.NotebookApp.allow_origin = '*'
 # c.NotebookApp.allow_origin_pat = ''
 
 # The full path to an SSL/TLS certificate file.
-# c.NotebookApp.certfile = u''
+certpath = os.path.join(ROOT_DIR, "setup/mycert.pem")
+c.NotebookApp.certfile = certpath
 
 # The logout handler class to use.
 # c.NotebookApp.logout_handler_class = <class 'IPython.html.auth.logout.LogoutHandler'>
@@ -105,8 +109,7 @@ c.NotebookApp.allow_origin = '*'
 # c.NotebookApp.tornado_settings = {}
 
 # The directory to use for notebooks and kernels.
-c.NotebookApp.notebook_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                          "../../books/")
+c.NotebookApp.notebook_dir = os.path.join(ROOT_DIR, "books/")
 
 # The kernel manager class to use.
 # c.NotebookApp.kernel_manager_class = <class 'IPython.html.services.kernels.kernelmanager.MappingKernelManager'>
@@ -160,7 +163,7 @@ c.NotebookApp.enable_mathjax = True
 #   from IPython.lib import passwd; passwd()
 #
 # The string should be of the form type:salt:hashed-password.
-# c.NotebookApp.password = u''
+c.NotebookApp.password = u'sha1:975fe01686f5:c032658ec067ca6afeca34214d8df032176da841'
 
 # extra paths to look for Javascript notebook extensions
 # c.NotebookApp.extra_nbextensions_path = []
