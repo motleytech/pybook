@@ -1,0 +1,12 @@
+div.output_subarea {
+    margin-top: 5px;
+    border: 1px solid #ddd;
+}
+
+div.code_cell {
+    margin-bottom: 5px;
+}
+
+div.input_area {
+    background-color: #eee;
+}
