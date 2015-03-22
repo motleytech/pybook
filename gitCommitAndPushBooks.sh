@@ -12,7 +12,6 @@ fi
 
 git add books
 git add export
-echo 'git commit -m"'$1'"'
-# git commit -m'"'$1'"'
-# git push origin master
+git commit -m\"$1\"
+git push origin master
 
