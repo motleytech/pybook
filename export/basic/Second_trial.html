@@ -1,7 +1,7 @@
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">os</span>
@@ -10,7 +10,7 @@
 <span class="n">cmd</span> <span class="o">=</span> <span class="s">&quot;/bin/bash -c &#39;ps fax | grep pybook | grep -v </span><span class="se">\&quot;</span><span class="s">grep pybook</span><span class="se">\&quot;</span><span class="s"> &gt; /tmp/file1&#39;&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;/tmp/file1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">pp</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -23,7 +23,11 @@
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>&apos;11780 ?        S      0:00  \\_ //bin/bash /webserver/webcms/djcms/pybook/runserv\n11788 ?        Sl     0:01      \\_ /webserver/webcms/djcms/pybook/venv/bin/pytho\n14870 ?        Sl     0:00          \\_ /webserver/webcms/djcms/pybook/venv/bin/p\n&apos;
+<pre>[&apos;16379 ?        S      0:00  \\_ //bin/bash /webserver/webcms/djcms/pybook/runserv&apos;,
+ &apos;16387 ?        Sl     0:12  |   \\_ /webserver/webcms/djcms/pybook/venv/bin/pytho&apos;,
+ &apos;14229 ?        Sl     0:03  |       \\_ /webserver/webcms/djcms/pybook/venv/bin/p&apos;,
+ &apos;20315 ?        Sl     0:00  |       \\_ /webserver/webcms/djcms/pybook/venv/bin/p&apos;,
+ &apos;&apos;]
 </pre>
 </div>
 </div>

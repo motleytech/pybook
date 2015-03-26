@@ -1,0 +1,438 @@
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Falling through the earth</span>
+
+<span class="n">dia</span> <span class="o">=</span> <span class="mi">12742000</span> <span class="c"># diameter of the earth in meters</span>
+<span class="n">rad</span> <span class="o">=</span> <span class="n">dia</span><span class="o">/</span><span class="mf">2.0</span>
+<span class="n">me</span> <span class="o">=</span> <span class="mf">5.972e24</span>  <span class="c"># mass of the earth</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="mf">3.1415926</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">6.67384e-11</span> <span class="c"># gravitational constant</span>
+
+<span class="n">volume</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
+<span class="n">density</span> <span class="o">=</span> <span class="n">me</span> <span class="o">/</span> <span class="n">volume</span>
+
+<span class="k">def</span> <span class="nf">acc_at_depth</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">rad</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">g</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">rad</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">g</span>
+    <span class="n">vol_d</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">density</span> <span class="o">*</span> <span class="n">vol_d</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="n">md</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">acc</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">acc_at_depth</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Lets plot the acceleration due to gravity vs distance from center of the earth. From our analytical work ($a_h = \frac {h}{R} g$), its expected to be a linear relationship.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">acc_depth</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">rad</span> <span class="o">/</span> <span class="mi">500</span>
+    <span class="n">acc_depth</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dd</span><span class="p">,</span> <span class="n">acc_at_depth</span><span class="p">(</span><span class="n">dd</span><span class="p">)))</span>
+
+<span class="n">xvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_depth</span><span class="p">]</span>
+<span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_depth</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xvals</span><span class="p">,</span> <span class="n">yvals</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;matplotlib.lines.Line2D at 0x3907e10&gt;]</pre>
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span> <span class="k">as</span> <span class="n">pp</span>
+<span class="n">chord_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100000</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">127</span><span class="p">)]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="mf">9.8</span>
+
+<span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="n">chlen</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">chlen</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_vt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">rt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">rt</span> <span class="o">=</span> <span class="n">s</span><span class="o">/</span><span class="n">v</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">rv</span><span class="p">,</span> <span class="n">rt</span><span class="p">)</span>
+    <span class="n">rt</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="n">v</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">v</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">rt</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rv</span><span class="p">,</span> <span class="n">rt</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">get_travel_time</span><span class="p">(</span><span class="n">chlen</span><span class="p">,</span> <span class="n">nparts</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">chlen</span><span class="o">/</span><span class="mf">2.0</span>
+    <span class="n">curve_power</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">stfacs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">pow</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">nparts</span><span class="p">),</span> <span class="n">curve_power</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">nparts</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">dist</span><span class="o">*</span><span class="n">xx</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">stfacs</span><span class="p">]</span>
+    <span class="n">total_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">st1</span><span class="p">,</span> <span class="n">st2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">st2</span> <span class="o">-</span> <span class="n">st1</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">get_acc</span><span class="p">(</span><span class="n">chlen</span><span class="p">,</span> <span class="n">rad</span><span class="p">,</span> <span class="n">st1</span><span class="p">)</span>
+        <span class="n">cv</span><span class="p">,</span> <span class="n">time_part</span> <span class="o">=</span> <span class="n">get_vt</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+        <span class="n">total_time</span> <span class="o">+=</span> <span class="n">time_part</span>
+        
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">total_time</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dist1</span><span class="p">,</span> <span class="n">get_travel_time</span><span class="p">(</span><span class="n">dist1</span><span class="p">,</span> <span class="mi">500</span><span class="p">))</span> <span class="k">for</span> <span class="n">dist1</span> <span class="ow">in</span> <span class="n">chord_lengths</span><span class="p">]</span>
+
+<span class="n">pp</span><span class="p">([(</span><span class="n">ds</span><span class="p">,</span> <span class="n">tm</span><span class="p">,</span> <span class="n">tm</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span> <span class="k">for</span> <span class="n">ds</span><span class="p">,</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[(100000, 2531.775847302616, 42.196264121710264),
+ (200000, 2531.775847302616, 42.196264121710264),
+ (300000, 2531.7758473026233, 42.19626412171039),
+ (400000, 2531.775847302616, 42.196264121710264),
+ (500000, 2531.775847302575, 42.19626412170958),
+ (600000, 2531.7758473026233, 42.19626412171039),
+ (700000, 2531.7758473026006, 42.19626412171001),
+ (800000, 2531.775847302616, 42.196264121710264),
+ (900000, 2531.775847302613, 42.196264121710215),
+ (1000000, 2531.775847302575, 42.19626412170958),
+ (1100000, 2531.775847302617, 42.196264121710286),
+ (1200000, 2531.7758473026233, 42.19626412171039),
+ (1300000, 2531.775847302659, 42.19626412171098),
+ (1400000, 2531.7758473026006, 42.19626412171001),
+ (1500000, 2531.7758473026142, 42.196264121710236),
+ (1600000, 2531.775847302616, 42.196264121710264),
+ (1700000, 2531.7758473026574, 42.19626412171096),
+ (1800000, 2531.775847302613, 42.196264121710215),
+ (1900000, 2531.7758473026583, 42.196264121710975),
+ (2000000, 2531.775847302575, 42.19626412170958),
+ (2100000, 2531.7758473025697, 42.1962641217095),
+ (2200000, 2531.775847302617, 42.196264121710286),
+ (2300000, 2531.775847302605, 42.19626412171009),
+ (2400000, 2531.7758473026233, 42.19626412171039),
+ (2500000, 2531.775847302577, 42.19626412170962),
+ (2600000, 2531.775847302659, 42.19626412171098),
+ (2700000, 2531.7758473026465, 42.196264121710776),
+ (2800000, 2531.7758473026006, 42.19626412171001),
+ (2900000, 2531.7758473026606, 42.19626412171101),
+ (3000000, 2531.7758473026142, 42.196264121710236),
+ (3100000, 2531.7758473026042, 42.19626412171007),
+ (3200000, 2531.775847302616, 42.196264121710264),
+ (3300000, 2531.775847302631, 42.19626412171052),
+ (3400000, 2531.7758473026574, 42.19626412171096),
+ (3500000, 2531.7758473026192, 42.19626412171032),
+ (3600000, 2531.775847302613, 42.196264121710215),
+ (3700000, 2531.7758473026, 42.19626412171),
+ (3800000, 2531.7758473026583, 42.196264121710975),
+ (3900000, 2531.775847302589, 42.196264121709824),
+ (4000000, 2531.775847302575, 42.19626412170958),
+ (4100000, 2531.7758473026142, 42.196264121710236),
+ (4200000, 2531.7758473025697, 42.1962641217095),
+ (4300000, 2531.775847302629, 42.19626412171048),
+ (4400000, 2531.775847302617, 42.196264121710286),
+ (4500000, 2531.7758473026583, 42.196264121710975),
+ (4600000, 2531.775847302605, 42.19626412171009),
+ (4700000, 2531.7758473026447, 42.19626412171075),
+ (4800000, 2531.7758473026233, 42.19626412171039),
+ (4900000, 2531.7758473026543, 42.196264121710904),
+ (5000000, 2531.775847302577, 42.19626412170962),
+ (5100000, 2531.7758473026047, 42.19626412171008),
+ (5200000, 2531.775847302659, 42.19626412171098),
+ (5300000, 2531.775847302602, 42.19626412171003),
+ (5400000, 2531.7758473026465, 42.196264121710776),
+ (5500000, 2531.7758473026206, 42.19626412171034),
+ (5600000, 2531.7758473026006, 42.19626412171001),
+ (5700000, 2531.7758473026247, 42.19626412171041),
+ (5800000, 2531.7758473026606, 42.19626412171101),
+ (5900000, 2531.775847302606, 42.1962641217101),
+ (6000000, 2531.7758473026142, 42.196264121710236),
+ (6100000, 2531.775847302647, 42.19626412171078),
+ (6200000, 2531.7758473026042, 42.19626412171007),
+ (6300000, 2531.775847302628, 42.19626412171046),
+ (6400000, 2531.775847302616, 42.196264121710264),
+ (6500000, 2531.7758473026142, 42.196264121710236),
+ (6600000, 2531.775847302631, 42.19626412171052),
+ (6700000, 2531.7758473026483, 42.196264121710804),
+ (6800000, 2531.7758473026574, 42.19626412171096),
+ (6900000, 2531.775847302618, 42.1962641217103),
+ (7000000, 2531.7758473026192, 42.19626412171032),
+ (7100000, 2531.775847302616, 42.196264121710264),
+ (7200000, 2531.775847302613, 42.196264121710215),
+ (7300000, 2531.7758473026197, 42.19626412171033),
+ (7400000, 2531.7758473026, 42.19626412171),
+ (7500000, 2531.7758473026347, 42.19626412171058),
+ (7600000, 2531.7758473026583, 42.196264121710975),
+ (7700000, 2531.775847302546, 42.1962641217091),
+ (7800000, 2531.775847302589, 42.196264121709824),
+ (7900000, 2531.7758473026634, 42.19626412171105),
+ (8000000, 2531.775847302575, 42.19626412170958),
+ (8100000, 2531.7758473026047, 42.19626412171008),
+ (8200000, 2531.7758473026142, 42.196264121710236),
+ (8300000, 2531.77584730257, 42.196264121709504),
+ (8400000, 2531.7758473025697, 42.1962641217095),
+ (8500000, 2531.775847302631, 42.19626412171052),
+ (8600000, 2531.775847302629, 42.19626412171048),
+ (8700000, 2531.7758473026583, 42.196264121710975),
+ (8800000, 2531.775847302617, 42.196264121710286),
+ (8900000, 2531.7758473026506, 42.19626412171085),
+ (9000000, 2531.7758473026583, 42.196264121710975),
+ (9100000, 2531.7758473026142, 42.196264121710236),
+ (9200000, 2531.775847302605, 42.19626412171009),
+ (9300000, 2531.775847302651, 42.196264121710854),
+ (9400000, 2531.7758473026447, 42.19626412171075),
+ (9500000, 2531.7758473026424, 42.196264121710705),
+ (9600000, 2531.7758473026233, 42.19626412171039),
+ (9700000, 2531.775847302642, 42.1962641217107),
+ (9800000, 2531.7758473026543, 42.196264121710904),
+ (9900000, 2531.7758473025965, 42.196264121709945),
+ (10000000, 2531.775847302577, 42.19626412170962),
+ (10100000, 2531.7758473025556, 42.19626412170926),
+ (10200000, 2531.7758473026047, 42.19626412171008),
+ (10300000, 2531.775847302595, 42.196264121709916),
+ (10400000, 2531.775847302659, 42.19626412171098),
+ (10500000, 2531.7758473026624, 42.19626412171104),
+ (10600000, 2531.775847302602, 42.19626412171003),
+ (10700000, 2531.7758473027075, 42.19626412171179),
+ (10800000, 2531.7758473026465, 42.196264121710776),
+ (10900000, 2531.7758473025924, 42.19626412170987),
+ (11000000, 2531.7758473026206, 42.19626412171034),
+ (11100000, 2531.77584730266, 42.196264121711),
+ (11200000, 2531.7758473026006, 42.19626412171001),
+ (11300000, 2531.7758473026515, 42.19626412171086),
+ (11400000, 2531.7758473026247, 42.19626412171041),
+ (11500000, 2531.7758473026333, 42.196264121710556),
+ (11600000, 2531.7758473026606, 42.19626412171101),
+ (11700000, 2531.7758473025865, 42.196264121709774),
+ (11800000, 2531.775847302606, 42.1962641217101),
+ (11900000, 2531.7758473026292, 42.196264121710485),
+ (12000000, 2531.7758473026142, 42.196264121710236),
+ (12100000, 2531.7758473026447, 42.19626412171075),
+ (12200000, 2531.775847302647, 42.19626412171078),
+ (12300000, 2531.775847302596, 42.19626412170994),
+ (12400000, 2531.7758473026042, 42.19626412171007),
+ (12500000, 2531.775847302622, 42.196264121710364),
+ (12600000, 2531.775847302628, 42.19626412171046)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[(1, 2), (2, 3), (3, 4)]
+6371000.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
