@@ -1,43 +1,38 @@
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Gravity-Train">Gravity Train<a class="anchor-link" href="#Gravity-Train">&#182;</a></h1><p>We will calculate the time taken by a gravity train while journeying through different straight line paths through the earth. We start by defining some constants that we will be using in the calculations.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[144]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
+<span class="c"># above line needs to be the first line in the notebook</span>
+<span class="c"># it is required to show inline matplotlib plots.</span>
 
-</div>
-</div>
-</div>
+<span class="c"># we will use these imports in the code below</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span> <span class="k">as</span> <span class="n">pp</span>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="c"># Falling through the earth</span>
-
+<span class="c"># constants</span>
 <span class="n">dia</span> <span class="o">=</span> <span class="mi">12742000</span> <span class="c"># diameter of the earth in meters</span>
 <span class="n">rad</span> <span class="o">=</span> <span class="n">dia</span><span class="o">/</span><span class="mf">2.0</span>
-<span class="n">me</span> <span class="o">=</span> <span class="mf">5.972e24</span>  <span class="c"># mass of the earth</span>
+<span class="n">me</span> <span class="o">=</span> <span class="mf">5.972e24</span>  <span class="c"># mass of the earth in kg</span>
 <span class="n">pi</span> <span class="o">=</span> <span class="mf">3.1415926</span>
 <span class="n">G</span> <span class="o">=</span> <span class="mf">6.67384e-11</span> <span class="c"># gravitational constant</span>
 <span class="n">g</span> <span class="o">=</span> <span class="mf">9.8</span>
 
 <span class="n">volume</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
 <span class="n">density</span> <span class="o">=</span> <span class="n">me</span> <span class="o">/</span> <span class="n">volume</span>
-
-<span class="k">def</span> <span class="nf">acc_at_depth</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">rad</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">g</span>
-    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">rad</span><span class="p">:</span>
-        <span class="k">return</span> <span class="o">-</span><span class="n">g</span>
-    <span class="n">vol_d</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
-    <span class="n">md</span> <span class="o">=</span> <span class="n">density</span> <span class="o">*</span> <span class="n">vol_d</span>
-    <span class="n">acc</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="n">md</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">acc</span>
 </pre></div>
 
 </div>
@@ -50,25 +45,38 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Lets plot the acceleration due to gravity vs distance from center of the earth. From our analytical work ($a_h = \frac {h}{R} g$), its expected to be a linear relationship.</p>
+<h4 id="Acceleration-vs-Distance-from-center-of-the-earth-(uniform-density)">Acceleration vs Distance from center of the earth (uniform density)<a class="anchor-link" href="#Acceleration-vs-Distance-from-center-of-the-earth-(uniform-density)">&#182;</a></h4><p>It will be interesting to see in a graphical form, how the acceleration due to gravity varies by depth as one goes deeper into the earth. Lets calculate and plot this first. From our analytical work ($a_h = \frac {h}{R} g$), its expected to be a linear relationship (so its not all that interesting after all).</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[78]:</div>
+<div class="prompt input_prompt">In&nbsp;[145]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">calc_acc_at_depth</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    returns the acceleration at distance d</span>
+<span class="sd">    from the center of the earth, assuming </span>
+<span class="sd">    uniform density</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">rad</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">g</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">rad</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">g</span>
+    <span class="n">vol_d</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">density</span> <span class="o">*</span> <span class="n">vol_d</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="n">md</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">acc</span>
 
-<span class="n">acc_depth</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">acc_at_depth</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">dd</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">rad</span> <span class="o">/</span> <span class="mi">500</span>
-    <span class="n">acc_depth</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dd</span><span class="p">,</span> <span class="n">acc_at_depth</span><span class="p">(</span><span class="n">dd</span><span class="p">)))</span>
+    <span class="n">acc_at_depth</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dd</span><span class="p">,</span> <span class="n">calc_acc_at_depth</span><span class="p">(</span><span class="n">dd</span><span class="p">)))</span>
 
-<span class="n">xvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_depth</span><span class="p">]</span>
-<span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_depth</span><span class="p">]</span>
+<span class="n">xvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_at_depth</span><span class="p">]</span>
+<span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="ow">in</span> <span class="n">acc_at_depth</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xvals</span><span class="p">,</span> <span class="n">yvals</span><span class="p">)</span>
 </pre></div>
 
@@ -80,11 +88,11 @@
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[78]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[145]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x43ef1d0&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x7ab4f90&gt;]</pre>
 </div>
 
 </div>
@@ -220,15 +228,22 @@ BnMRMDNrMBcBM7MGcxEwM2swFwEzswb7f9eB05GD1QxbAAAAAElFTkSuQmCC
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we will calculate and plot the travel time for 127 uniformly spaced chord lengths, starting from 100 km and going up to 12700 km (almost equal to the diameter).</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[95]:</div>
+<div class="prompt input_prompt">In&nbsp;[146]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span> <span class="k">as</span> <span class="n">pp</span>
-<span class="n">chord_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100000</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">127</span><span class="p">)]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="mf">9.8</span>
+<div class=" highlight hl-ipython2"><pre><span class="n">chord_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100000</span><span class="o">*</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">127</span><span class="p">)]</span>
 
 <span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="n">chlen</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">chlen</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
@@ -261,9 +276,14 @@ BnMRMDNrMBcBM7MGcxEwM2swFwEzswb7f9eB05GD1QxbAAAAAElFTkSuQmCC
 <span class="n">results</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dist1</span><span class="p">,</span> <span class="n">get_travel_time</span><span class="p">(</span><span class="n">dist1</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">get_acc</span><span class="p">))</span> <span class="k">for</span> <span class="n">dist1</span> <span class="ow">in</span> <span class="n">chord_lengths</span><span class="p">]</span>
 
 <span class="c"># plot of time vs chord length</span>
-<span class="n">xvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
 <span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">/</span><span class="mf">60.0</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+<span class="n">maxDiff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">yvals</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">yvals</span><span class="p">)</span>
+
+<span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%10.6f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">yvals</span><span class="p">]</span>
+<span class="n">xvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xvals</span><span class="p">,</span> <span class="n">yvals</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Difference between max and min travel times : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">maxDiff</span>
 </pre></div>
 
 </div>
@@ -274,139 +294,116 @@ BnMRMDNrMBcBM7MGcxEwM2swFwEzswb7f9eB05GD1QxbAAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[95]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x54bd950&gt;]</pre>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Difference between max and min travel times : 2.69295696853e-12
+</pre>
 </div>
-
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAETCAYAAADNpUayAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-AAALEgAACxIB0t1+/AAAGldJREFUeJzt3XucXGV9x/HPN1dBCDGuBCGBIISLNlwqyEUhi9iaBhEL
-CCIoNytUA1ZbtNIqUYuX1iIgQrlIiq+2QUGLoYZQIaxBhEgqCQEDJkBoLhquAgGswfz6x3kWhmFn
-58xldzYP3/frNa+dOec5z/md23fOnJnZUURgZmZ5GdbpAszMrP0c7mZmGXK4m5llyOFuZpYhh7uZ
-WYYc7mZmGRq0cJd0paR1kpa2qb95kp6UdH3V8B0lLZS0XNLVkkY22O9wSXdV91sx/nhJSyTdLek2
-SXtUjOtzGSXtKen2NM0cSVtWjNsjjbsnjR8laXNJP5K0LA3/SlV/x0i6N43796pxYyStlvTNimEz
-JK2QtFHSuHrLImmipFsq5nFmifV2sKRfSNog6ah67c1sgEXEoNyAg4C9gaVt6u+dwHuA66uGfw84
-Jt2/BDi9j2n/FZhao99PAf8OzKkx/gBgq3R/GnBHvWUE7gQOSvdPBr6Y7o8AlgBT0uPXUTzhbtZb
-HzASWABMS48nA7+oqKGral4XpPq/WTFsL2AH4CFgXL1lAbYB9kr3twDuB3avsz12AKYAVwFHDdZ+
-5ZtvvvV9G7Qz94i4FXiycpiknSTdIGmRpAWSdm2gv/nA+qr+BBwCXJsGXQW8r6/J0+1lJE0ApgNX
-AKox39sj4qn0cCEwoWLcK5YxmZzGAdwE9J7Z/ilwd0QsTdM/GREbI+L5iPhJGraBIsy3S9P8BXBR
-bw0R8VhF/W8Ftgb+u6rmxRHxcNlliYjfRMTidH89sAzYNs2jz20WEQ+n5djY13ozs8HV6WvulwFn
-RMQ+wFnAxS3293rgtxHRGzBreCkUq/UV3t9IdZQNqFOBuSXa3SvpiHT//cDEdH8XINIlpv+RdNYr
-ipTGAocDN6dBk4FdJf00Xc55d2o3DPg68Nclay+1LJImUbwaWZgGtXubmdkAGNGpGUvaguKywDXF
-CTcAo9K4I4Ev9DHZ6oj4sybn927gq+nh9sA7JK0HfhcRB0h6D/BIRNwlqbtEf4cApwBvLzH7U4AL
-JX0OmAP8Pg0fAbwD2Ad4HrhZ0v+kVyVIGgHMBi6IiJUV0+wMTKV4klggaQrwIWBuRKxVxQoto9ay
-pG10LfCJiFjf3zYzs6GlY+FO8arhtxGxd/WIiPgB8IMSfVRfWnkcGCtpWDp7n0Bx9k5E3AjcCCBp
-FjArIhZUTHsg8F5J04HXAGMkfSciPlw90/TG4+UU18H7ugxTvTz3A71n2LsAh6VRq4AFEfFEGjcX
-+GNgfhp/GXB/RFxY0d1qYGFE/AFYKelXFGfz+wMHSfoYxXXyUZKeiYiz+6ut1rKkN6K/D/xbRFyX
-BtfcZtWLXGe8mQ2wupdlynzKRVJ3+oTJPZJ6ysw4Ip4GHpJ0dOpDlZ88KellZ6gREcAtFJc+AE4E
-rqueqMa0Z0fExIjYEfgAML9GsG9P8cRzQkSsKFWk9Ib0dxjw9xRv9ELxZDNF0mbpLH0qcG9q+w/A
-GOCTVd1dB3SnNl0Ul3YeiIgTImKHVP/fAN+pEewvLnetZUln/t8GfhkR51esozLbTPR9ycvMBlO9
-d1yp8ykXYCxFIE1Ij7tqtJsNrKW4JLGK4lMjk4AbgMWpj78v+04wcCvwCPBc6u9P0vAdKa4PLwe+
-C4zsY9pZwMH99D2Vik/LAKcBp6X7V1C8Qrgr3X7exzL+X+8ypuFnUnzi5H7gy1XzOh64B1gKfDUN
-m0Bx3f/eivmcUjHNP6dxd5M+GVTV54nAhRWPz0z1/J7ilcxl/S0LxaWijWm79I7r/bROn9sM2DfN
-Yz3wWK39xTfffBucmyLqv4JOb6pdHxFT+hj3MWCbiPh83Y7MzGxQtOPTMpOBcelLL4skfagNfZqZ
-WQva8YbqSIo3AQ8FNgdul3RHRCxvQ99mZtaEdoT7KuCxiHgeeF7SAmBPimveL5LkT1CYmTUhIhr+
-kEI7wv2HwEWShgOjgf2A8/pq2EyBQ4WkmRExs9N1NGtTrn9Trh1cf6dlUH9TJ8Z1w13SbIpPj3RJ
-WgWcQ3Ephoi4NCLukzSP4pMbG4HLI+KXzRRjZmbtUTfcI+K4Em2+TvHVdzMzGwI6/b9lNiU9nS6g
-RT2dLqAFPZ0uoEU9nS6gRT2dLqBFPZ0uoBNKfc69LTOSYlO+5m5m1gnNZqfP3M3MMuRwNzPLkMPd
-zCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRw
-NzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww5
-3M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLUN1wl3Sl
-pHWSltZpt6+kFyQd2b7yzMysGWXO3GcB0/prIGk48DVgHqA21GVmZi2oG+4RcSvwZJ1mZwDXAo+2
-oygzM2tNy9fcJW0HHAFckgZFq32amVlrRrShj/OBv42IkCT6uSwjaWbFw56I6GnD/M3MsiGpG+hu
-uZ+I+ifakiYB10fElD7GPchLgd4FPAf8RUTMqWoXEeHr8WZmDWg2O1s+c4+IN1UUMYviSWBOP5OY
-mdkAqxvukmYDU4EuSauAc4CRABFx6cCWZ2ZmzSh1WaYtM/JlGTOzhjWbnf6GqplZhhzuZmYZcrib
-mWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzu
-ZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGH
-u5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI
-4W5mlqG64S7pSknrJC2tMf54SUsk3S3pNkl7tL9MMzNrRJkz91nAtH7GPwgcHBF7AF8CLmtHYWZm
-1ry64R4RtwJP9jP+9oh4Kj1cCExoU21mZtakdl9zPxWY2+Y+zcysQSPa1ZGkQ4BTgLf302ZmxcOe
-iOhp1/zNzHIgqRvobrmfiCgzs0nA9RExpcb4PYAfANMiYkWNNhERar5UM7NXn2azs+XLMpK2pwj2
-E2oFu5mZDa66Z+6SZgNTgS5gHXAOMBIgIi6VdAXw58D/pkk2RMTb+ujHZ+5mZg1qNjtLXZZpB4e7
-mVnjOnZZxszMhh6Hu5lZhhzuZmYZcribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mliGHu5lZ
-hhzuZmYZcribmWXI4W5mA0pie4nXdrqOVxuHu5kNmBTqPwVukRjX6XpeTbIPd4l3SOxTp80IicMl
-tqwYNlbiyBbnvYPERyUOqD5zkdhW4nSp3E8dSuwmcZhEv//6U+JdEtu1UPNrJI6W2KxOu/ESO9YY
-94bUR0P/plRiTFon2zQyXYl+h0m8SeLdEidWbucW+hwn8WGJLWqMP7HefldyPpI4VGL/quHj0/CT
-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
-XuCq1HYhMFbS+PaUZ2ZmzWjHNfft4GW/FboamNCGfs3MrEntekO1+iegBue3+8zMrE8j2tDHGopf
-fe81IQ17BUkzKx72RERPG+ZvZpYNSd0UP7jeWj9lfiBb0iTg+oiY0se46cCMiJguaX/g/IjYv492
-/oFsM7MGNZuddc/cJc0GpgJdklYB5wAjASLi0oiYK2m6pBXAs8DJjRZhZmbtVerMvS0z8pm7mVnD
-ms1Of0PVzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww5
-3M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxD
-Dnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPLkMPdzCxDDnczsww53M3MMuRwNzPL
-kMPdzCxDDnczsww53M3MMuRwNzPLUN1wlzRN0n2Slkv6TB/juyTNk7RY0j2SThqQSs3MrDRFRO2R
-0nDgfuBdwBrgTuC4iFhW0WYmMDoiPiupK7UfHxEvVPUVEaH2L4KZWb6azc56Z+5vA1ZExMqI2ABc
-DRxR1ebXwJh0fwzweHWwm5nZ4BpRZ/x2wKqKx6uB/araXA7Ml7QW2BI4pn3lmZlZM+qFe+1rNi85
-G1gcEd2SdgJ+LGnPiHimumG6hNOrJyJ6SldqZvYqIKkb6G61n3rhvgaYWPF4IsXZe6UDgXMBIuIB
-SQ8BuwKLqjuLiJlNV2pm9iqQTnp7eh9LOqeZfupdc18ETJY0SdIo4FhgTlWb+yjecEXSeIpgf7CZ
-YszMrD36PXOPiBckzQBuBIYD346IZZJOS+MvBb4MzJK0hOLJ4tMR8cQA121mZv3o96OQbZ2RPwpp
-ZtawgfoopJmZbYIc7mZmGXK4m5llyOFuZpYhh7uZWYYc7mZmGXK4m5llyOFuZpYhh7uZWYYc7mZm
-GXK4m5llyOFuZpYhh7uZWYYc7mZmGXK4m5llyOFuZpYhh7uZWYYc7mZmGXK4m5llyOFuZpYhh7uZ
-WYYc7mZmGXK4m5llyOFuZpYhh7uZWYYc7mZmGXK4m5llyOFuZpYhh7uZWYYc7mZmGXK4m5llyOFu
-ZpYhh7uZWYYc7mZmGXK4m5llqG64S5om6T5JyyV9pkabbkl3SbpHUk/bqzQzs4b0G+6ShgMXAdOA
-NwPHSdq9qs1Y4FvA4RHxR8DRA1RrR0nq7nQNrdiU69+UawfX32mbev3Nqnfm/jZgRUSsjIgNwNXA
-EVVtPgh8PyJWA0TEY+0vc0jo7nQBLerudAEt6O50AS3q7nQBLerudAEt6u50AZ1QL9y3A1ZVPF6d
-hlWaDIyTdIukRZI+1M4CzcyscSPqjI8SfYwE/hg4FNgcuF3SHRGxvNXizMysOYqond+S9gdmRsS0
-9PizwMaI+FpFm88Am0XEzPT4CmBeRFxb1VeZJwozM6sSEWp0mnpn7ouAyZImAWuBY4Hjqtr8ELgo
-vfk6GtgPOK8dxZmZWXP6DfeIeEHSDOBGYDjw7YhYJum0NP7SiLhP0jzgbmAjcHlE/HKgCzczs9r6
-vSxjZmabprZ/Q7Xkl54uTOOXSNq73TW0ol79ko5Pdd8t6TZJe3Sizr6UWfep3b6SXpB05GDWV8+m
-/oW5EvtOl6R5khan+k/qQJl9knSlpHWSlvbTZigft/3WP5SPWyi3/lO78sduRLTtRnHpZgUwieJT
-NIuB3avaTAfmpvv7AXe0s4ZBqP8AYKt0f9pQqb9M7RXt5gP/BRzV6bobXPdjgXuBCelxV6frbrD+
-mcBXemsHHgdGdLr2VM9BwN7A0hrjh+xxW7L+IXnclq2/Yh8rfey2+8y9zJee3gtcBRARC4Gxksa3
-uY5m1a0/Im6PiKfSw4XAhEGusZYy6x7gDOBa4NHBLK6ETf0Lc2Xq/zUwJt0fAzweES8MYo01RcSt
-wJP9NBnKx23d+ofwcQuUWv/Q4LHb7nAv86WnvtoMlRVdpv5KpwJzB7Si8urWLmk7isC5JA0aSm+4
-bOpfmCtT/+XAWyStBZYAnxik2tphKB+3jRpKx20pzRy79T4K2aiyYVH9scihEjKl65B0CHAK8PaB
-K6chZWo/H/jbiAhJ4pXboZM29S/Mlan/bGBxRHRL2gn4saQ9I+KZAa6tXYbqcVvaEDxuy2r42G13
-uK8BJlY8nkjxDN9fmwlp2FBQpn7SmzGXA9Miot5LqcFSpva3AlcX+wZdwJ9J2hARcwanxH6VqX8V
-8FhEPA88L2kBsCcwFMK9TP0HAucCRMQDkh4CdqX4PslQN5SP21KG6HFbVuPHbpvfFBgBPEDxptIo
-6r+huj9D6I2NkvVvT/HG2f6drrfR2qvazwKO7HTdDa773YCbKN5Y2hxYCry507U3UP95wDnp/niK
-8B/X6dor6ptEuTdUh9RxW7L+IXnclq2/ql2pY7etZ+5R7ktPcyVNl7QCeBY4uZ01tKJM/cDngdcB
-l6Rn0Q0R8bZO1dyrZO1DVsl9Z8h+Ya7k+v8yMEvSEor3uz4dEU90rOgKkmYDU4EuSauAcygugw35
-4xbq188QPW57lai/8T7TM4GZmWXEP7NnZpYhh7uZWYYc7mZmGXK4m5llyOFuZjZAyv5DsNT2vPRP
-8e6SdL+klj6L70/LmJkNEEkHAeuB70TElAammwHsFREfaXbePnM3Mxsg0cc/BJO0k6Qb0v9HWiBp
-1z4m/SAwu5V5t/vfD5iZWf8uA06LiBWS9gMupvh/SQBI2oHi26rzW5mJw93MbJBI2oLif8tfk74p
-C8W/q6j0AeCaaPGaucPdzGzwDAN+GxH9/ZLVscDH2jEjMzMbBBHxNPCQpKMBVHjxJ/8k7Qa8LiLu
-aHVeDnczswGS/iHYz4BdJa2SdDJwPHCqpMXAPRS/ctXrWFp8I/XFefujkGZm+fGZu5lZhhzuZmYZ
-cribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mlqH/B7bWZwhOR+OuAAAAAElFTkSuQmCC
+<img src="data:image/png;base64,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
+AABJRU5ErkJggg==
 "
 >
 </div>
@@ -422,17 +419,32 @@ cribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mlqH/B7bWZwhOR+OuAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The above plot shows that the travel time across chords of different length are almost exactly the same. The small wiggles in the curve are differences of less than $10^{-8}$%.</p>
+<p><em>All right!</em> This confirms our analytical solution. The travel time across chords of different length are indeed almost exactly the same. The differences in the max and min travel times is of the order of $10^{-11}$, which is probably the best accuracy that we can get with double precision arithmetic on a computer.</p>
+<p>This is all well and good for the simplified case of the earth having uniform density. But that is not true for the real earth. In fact, we expect the density near the core to be larger due to the pressure of all the mass that is pressing down upon it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Acceleration-in-non-uniform-density">Acceleration in non-uniform density<a class="anchor-link" href="#Acceleration-in-non-uniform-density">&#182;</a></h4><p>This website (<a href="http://geophysics.ou.edu/solid_earth/prem.html">http://geophysics.ou.edu/solid_earth/prem.html</a>) gives us a table of acceleration vs depth for the earth.</p>
+<p>I copy pasted the table and cleaned up the data in a few lines of code below (python is awesome).</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[98]:</div>
+<div class="prompt input_prompt">In&nbsp;[147]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">g_at_depth</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;0.0	11266.20	3667.80	13088.48	1425.3	176.1	0.4407	363.850	0.0000</span>
+<div class=" highlight hl-ipython2"><pre><span class="c"># depth vs acceleration table from</span>
+<span class="c"># http://geophysics.ou.edu/solid_earth/prem.html</span>
+
+<span class="n">g_at_depth</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;0.0	11266.20	3667.80	13088.48	1425.3	176.1	0.4407	363.850	0.0000</span>
 <span class="s">200.0	11255.93	3663.42	13079.77	1423.1	175.5	0.4408	362.900	0.7311</span>
 <span class="s">400.0	11237.12	3650.27	13053.64	1416.4	173.9	0.4410	360.030	1.4604</span>
 <span class="s">600.0	11205.76	3628.35	13010.09	1405.3	171.3	0.4414	355.280	2.1862</span>
@@ -497,11 +509,11 @@ cribmWXI4W5mliGHu5lZhhzuZmYZcribmWXI4W5mlqH/B7bWZwhOR+OuAAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[98]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[147]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x56e61d0&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x88f1950&gt;]</pre>
 </div>
 
 </div>
@@ -633,9 +645,20 @@ KChEUgAAAABJRU5ErkJggg==
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The PREM data only gives the acceleration at discrete intervals. We will write an interpolation method which will do a linear interpolation of the acceleration based on the PREM table.</p>
+<p>After doing that, we can find the travel times for different chord lengths and plot it.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[103]:</div>
+<div class="prompt input_prompt">In&nbsp;[148]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># find correct acceleration at varying depths</span>
@@ -644,7 +667,7 @@ KChEUgAAAABJRU5ErkJggg==
 
 <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_left</span>
 
-<span class="k">def</span> <span class="nf">get_acc_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_real_acc_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="n">dtable</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtable</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">gtable</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -656,7 +679,7 @@ KChEUgAAAABJRU5ErkJggg==
     
 <span class="k">def</span> <span class="nf">get_actual_acc</span><span class="p">(</span><span class="n">chlen</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="n">depth</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="o">*</span><span class="n">R</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">chlen</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">gd</span> <span class="o">=</span> <span class="n">get_acc_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+    <span class="n">gd</span> <span class="o">=</span> <span class="n">get_real_acc_at_depth</span><span class="p">(</span><span class="n">depth</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">gd</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">depth</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">chlen</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
 
 
@@ -678,11 +701,11 @@ KChEUgAAAABJRU5ErkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[103]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[148]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x47d5910&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x8ad04d0&gt;]</pre>
 </div>
 
 </div>
@@ -828,7 +851,9 @@ woFBddg2oT8AAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This is so cool... we can travel to the other side of the earth in ~37 minutes, while it takes a longer time to travel to closer places. The kind of result that made this effort worth it.</p>
+<h2 id="Whoa....-this-is-damn-cool!">Whoa.... this is damn cool!<a class="anchor-link" href="#Whoa....-this-is-damn-cool!">&#182;</a></h2><p>The graph above shows that we can travel to the opposite side of the earth in ~37 minutes, while it takes 42 minutes to travel to nearby places. This is the kind of result that makes one fall in love with physics and maths.</p>
+<p>Maybe someday, we can find such a shortcut through space which allows us to jump to far away galaxies faster than we can travel in our own solar system.</p>
+<p>If you look closely, you will also see that this is the essence of gravity assisted slingshot mechanisms that space rockets use to their advantage for gaining speed and venturing into outer space.</p>
 
 </div>
 </div>
