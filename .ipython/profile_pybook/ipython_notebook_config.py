@@ -168,7 +168,7 @@ c.NotebookApp.enable_mathjax = True
 
 try:
     modPath = os.path.abspath(os.path.join(ROOT_DIR, "setup"))
-    sys.path.append()
+    sys.path.append(modPath)
     import pwhash
     passwordHash = pwhash.passwordHash
 
