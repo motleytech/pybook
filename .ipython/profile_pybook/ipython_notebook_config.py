@@ -1,5 +1,7 @@
 # Configuration file for ipython-notebook.
 import os
+import sys
+import logging
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "../../"))
@@ -163,7 +165,20 @@ c.NotebookApp.enable_mathjax = True
 #   from IPython.lib import passwd; passwd()
 #
 # The string should be of the form type:salt:hashed-password.
-c.NotebookApp.password = u'sha1:975fe01686f5:c032658ec067ca6afeca34214d8df032176da841'
+
+try:
+    modPath = os.path.abspath(os.path.join(ROOT_DIR, "setup"))
+    sys.path.append()
+    import pwhash
+    passwordHash = pwhash.passwordHash
+
+    sys.path.pop()
+except:
+    logging.exception("ERROR in loading passwordHash")
+    # hash for 'defaultPassword'
+    passwordHash = u'sha1:975fe01686f5:c032658ec067ca6afeca34214d8df032176da841'
+
+c.NotebookApp.password = passwordHash
 
 # extra paths to look for Javascript notebook extensions
 # c.NotebookApp.extra_nbextensions_path = []
