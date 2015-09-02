@@ -17,6 +17,9 @@ else:
         os.rmdir(VENV_FOLDER)
         os.system("cd %s; virtualenv %s" % (ROOT_DIR, VENV_NAME))
 
+# upgrade pip
+os.system("/bin/bash -c 'cd %s; source %s; pip install -U pip'" % (ROOT_DIR, "env.sh"))
+
 # install pip dependencies
 os.system("/bin/bash -c 'cd %s; source %s; pip install ipython[notebook]'" %
           (ROOT_DIR, "env.sh"))
