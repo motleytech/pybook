@@ -7,4 +7,4 @@ echo $SCRIPTPATH
 
 cd $SCRIPTPATH
 source ./env.sh
-ipython notebook --profile=pybook
+jupyter notebook
