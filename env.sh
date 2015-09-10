@@ -1,2 +1,2 @@
 source venv/bin/activate
-export IPYTHONDIR=`pwd`/.ipython
+export JUPYTER_CONFIG_DIR=`pwd`/config
