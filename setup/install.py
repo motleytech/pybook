@@ -38,5 +38,7 @@ os.system("/bin/bash -c 'cd %s; source %s; pip install -U pip'" % (ROOT_DIR, "en
 os.system("/bin/bash -c 'cd %s; source %s; pip install distribute --upgrade'" %
           (ROOT_DIR, "env.sh"))
 
+os.system("/bin/bash -c 'cd %s; source %s; cd IPython-notebook-extensions; python setup.py install'" % (ROOT_DIR, 'env.sh'))
+
 os.system("/bin/bash -c 'cd %s; source %s; pip install -r %s/setup/requirements.txt'" %
           (ROOT_DIR, "env.sh", ROOT_DIR))
