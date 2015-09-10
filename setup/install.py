@@ -19,10 +19,10 @@ else:
 
 # install pandoc to export to pdf
 os.system("sudo apt-get -y install pandoc")
-os.system("cd /tmp; \
+os.system("cd /tmp;rm -rf install-tl*; \
 wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
 tar -xzf install-tl-unx.tar.gz; \
-cd `tar -tzf install-tl-unx.tar.gz | sed -e 'N;s/^\(.*\).*\n\1.*$/\1\n\1/;D'` \
+cd `tar -tzf install-tl-unx.tar.gz | sed -e 'N;s/^\(.*\).*\n\1.*$/\1\n\1/;D'`; \
 sudo ./install-tl")
 
 # dependencies for scipy
