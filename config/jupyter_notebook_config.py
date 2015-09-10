@@ -4,12 +4,20 @@
 # Configurable configuration
 #------------------------------------------------------------------------------
 
+import os
+import sys
+import logging
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "../../"))
+
+
 #------------------------------------------------------------------------------
 # SingletonConfigurable configuration
 #------------------------------------------------------------------------------
 
 # A configurable that only allows one instance.
-# 
+#
 # This class is for classes that should only have one instance of itself or
 # *any* subclass. To create and retrieve such a class use the
 # :meth:`SingletonConfigurable.instance` method.
@@ -64,7 +72,7 @@
 # c.NotebookApp.jinja_environment_options = traitlets.Undefined
 
 # The IP address the notebook server will listen on.
-# c.NotebookApp.ip = 'localhost'
+c.NotebookApp.ip = '*'
 
 # DEPRECATED use base_url
 # c.NotebookApp.base_project_url = '/'
@@ -76,7 +84,7 @@
 # The random bytes used to secure cookies. By default this is a new random
 # number every time you start the Notebook. Set it to a value in a config file
 # to enable logins to persist across server sessions.
-# 
+#
 # Note: Cookie secrets should be kept private, do not share config files with
 # cookie_secret stored in plaintext (you can read the value from a file).
 # c.NotebookApp.cookie_secret = ''
@@ -85,44 +93,46 @@
 # c.NotebookApp.default_url = '/tree'
 
 # The port the notebook server will listen on.
-# c.NotebookApp.port = 8888
+c.NotebookApp.port = 7143
 
 # The kernel spec manager class to use. Should be a subclass of
 # `jupyter_client.kernelspec.KernelSpecManager`.
-# 
+#
 # The Api of KernelSpecManager is provisional and might change without warning
 # between this version of IPython and the next stable one.
 # c.NotebookApp.kernel_spec_manager_class = <class 'jupyter_client.kernelspec.KernelSpecManager'>
 
 # Set the Access-Control-Allow-Origin header
-# 
+#
 # Use '*' to allow any origin to access your server.
-# 
+#
 # Takes precedence over allow_origin_pat.
-# c.NotebookApp.allow_origin = ''
+c.NotebookApp.allow_origin = '*'
 
 # The notebook manager class to use.
 # c.NotebookApp.contents_manager_class = <class 'notebook.services.contents.filemanager.FileContentsManager'>
 
 # Use a regular expression for the Access-Control-Allow-Origin header
-# 
+#
 # Requests from an origin matching the expression will get replies with:
-# 
+#
 #     Access-Control-Allow-Origin: origin
-# 
+#
 # where `origin` is the origin of the request.
-# 
+#
 # Ignored if allow_origin is set.
 # c.NotebookApp.allow_origin_pat = ''
 
 # The full path to an SSL/TLS certificate file.
-# c.NotebookApp.certfile = u''
+
+certpath = os.path.join(ROOT_DIR, "setup/mycert.pem")
+c.NotebookApp.certfile = certpath
 
 # The logout handler class to use.
 # c.NotebookApp.logout_handler_class = <class 'notebook.auth.logout.LogoutHandler'>
 
 # The base URL for the notebook server.
-# 
+#
 # Leading and trailing slashes can be omitted, and will automatically be added.
 # c.NotebookApp.base_url = '/'
 
@@ -134,7 +144,7 @@
 # c.NotebookApp.tornado_settings = traitlets.Undefined
 
 # The directory to use for notebooks and kernels.
-# c.NotebookApp.notebook_dir = u''
+c.NotebookApp.notebook_dir = os.path.join(ROOT_DIR, "books/")
 
 # The kernel manager class to use.
 # c.NotebookApp.kernel_manager_class = <class 'notebook.services.kernels.kernelmanager.MappingKernelManager'>
@@ -146,27 +156,27 @@
 # details.
 # c.NotebookApp.ssl_options = traitlets.Undefined
 
-# 
+#
 # c.NotebookApp.file_to_run = ''
 
 # DISABLED: use %pylab or %matplotlib in the notebook to enable matplotlib.
 # c.NotebookApp.pylab = 'disabled'
 
 # Whether to enable MathJax for typesetting math/TeX
-# 
+#
 # MathJax is the javascript library IPython uses to render math/LaTeX. It is
 # very large, so you may want to disable it if you have a slow internet
 # connection, or for offline use of the notebook.
-# 
+#
 # When disabled, equations etc. will appear as their untransformed TeX source.
-# c.NotebookApp.enable_mathjax = True
+c.NotebookApp.enable_mathjax = True
 
 # Reraise exceptions encountered loading server extensions?
 # c.NotebookApp.reraise_server_extension_failures = False
 
 # The base URL for websockets, if it differs from the HTTP server (hint: it
 # almost certainly doesn't).
-# 
+#
 # Should be in the form of an HTTP origin: ws[s]://hostname[:port]
 # c.NotebookApp.websocket_url = ''
 
@@ -174,16 +184,29 @@
 # platform dependent and determined by the python standard library `webbrowser`
 # module, unless it is overridden using the --browser (NotebookApp.browser)
 # configuration option.
-# c.NotebookApp.open_browser = True
+c.NotebookApp.open_browser = False
 
 # Hashed password to use for web authentication.
-# 
+#
 # To generate, type in a python/IPython shell:
-# 
+#
 #   from notebook.auth import passwd; passwd()
-# 
+#
 # The string should be of the form type:salt:hashed-password.
-# c.NotebookApp.password = u''
+
+try:
+    modPath = os.path.abspath(os.path.join(ROOT_DIR, "setup"))
+    sys.path.append(modPath)
+    import pwhash
+    passwordHash = pwhash.passwordHash
+
+    sys.path.pop()
+except:
+    logging.exception("ERROR in loading passwordHash")
+    # hash for 'defaultPassword'
+    passwordHash = u'sha1:975fe01686f5:c032658ec067ca6afeca34214d8df032176da841'
+
+c.NotebookApp.password = passwordHash
 
 # extra paths to look for Javascript notebook extensions
 # c.NotebookApp.extra_nbextensions_path = traitlets.Undefined
@@ -192,7 +215,7 @@
 # c.NotebookApp.allow_credentials = False
 
 # Extra paths to search for serving static files.
-# 
+#
 # This allows adding javascript/css to be available from the notebook server
 # machine, or overriding individual files in the IPython
 # c.NotebookApp.extra_static_paths = traitlets.Undefined
@@ -206,7 +229,7 @@
 # c.NotebookApp.trust_xheaders = False
 
 # Extra paths to search for serving jinja templates.
-# 
+#
 # Can be used to override templates from notebook.templates.
 # c.NotebookApp.extra_template_paths = traitlets.Undefined
 
@@ -230,7 +253,7 @@
 #------------------------------------------------------------------------------
 
 # A parent class for Configurables that log.
-# 
+#
 # Subclasses have a log trait, and the default behavior is to get the logger
 # from the currently running Application.
 
@@ -249,7 +272,7 @@
 # c.ConnectionFileMixin.ip = u''
 
 # JSON file in which to store connection info [default: kernel-<pid>.json]
-# 
+#
 # This file will contain the IP, ports, and authentication key needed to connect
 # clients to this kernel. By default, this file will be created in the security
 # dir of the current profile, but can be specified by absolute path.
@@ -264,7 +287,7 @@
 # set the shell (ROUTER) port [default: random]
 # c.ConnectionFileMixin.shell_port = 0
 
-# 
+#
 # c.ConnectionFileMixin.transport = 'tcp'
 
 # set the iopub (PUB) port [default: random]
@@ -275,11 +298,11 @@
 #------------------------------------------------------------------------------
 
 # Manages a single kernel in a subprocess on this host.
-# 
+#
 # This version starts kernels with Popen.
 
 # DEPRECATED: Use kernel_name instead.
-# 
+#
 # The Popen Command to launch the kernel. Override this if you have a custom
 # kernel. If kernel_cmd is specified in a configuration file, Jupyter does not
 # pass any arguments to the kernel, because it cannot make any assumptions about
@@ -296,27 +319,27 @@
 #------------------------------------------------------------------------------
 
 # Object for handling serialization and sending of messages.
-# 
+#
 # The Session object handles building messages and sending them with ZMQ sockets
 # or ZMQStream objects.  Objects can communicate with each other over the
 # network via Session objects, and only need to work with the dict-based IPython
 # message spec. The Session will handle serialization/deserialization, security,
 # and metadata.
-# 
+#
 # Sessions support configurable serialization via packer/unpacker traits, and
 # signing with HMAC digests via the key/keyfile traits.
-# 
+#
 # Parameters ----------
-# 
+#
 # debug : bool
 #     whether to trigger extra debugging statements
 # packer/unpacker : str : 'json', 'pickle' or import_string
 #     importstrings for methods to serialize message parts.  If just
 #     'json' or 'pickle', predefined JSON and pickle packers will be used.
 #     Otherwise, the entire importstring must be used.
-# 
+#
 #     The functions must accept at least valid JSON input, and output *bytes*.
-# 
+#
 #     For example, to use msgpack:
 #     packer = 'msgpack.packb', unpacker='msgpack.unpackb'
 # pack/unpack : callables
@@ -347,7 +370,7 @@
 # c.Session.metadata = traitlets.Undefined
 
 # The maximum number of digests to remember.
-# 
+#
 # The digest history will be culled when it exceeds this value.
 # c.Session.digest_history_size = 65536
 
@@ -398,7 +421,7 @@
 
 # A KernelManager that handles notebook mapping and HTTP error handling
 
-# 
+#
 # c.MappingKernelManager.root_dir = u''
 
 #------------------------------------------------------------------------------
@@ -406,13 +429,13 @@
 #------------------------------------------------------------------------------
 
 # Base class for serving files and directories.
-# 
+#
 # This serves any text or binary file, as well as directories, with special
 # handling for JSON notebook documents.
-# 
+#
 # Most APIs take a path argument, which is always an API-style unicode path, and
 # always refers to a directory.
-# 
+#
 # - unicode, not url-escaped
 # - '/'-separated
 # - leading and trailing '/' will be stripped
@@ -423,23 +446,23 @@
 # c.ContentsManager.untitled_file = 'untitled'
 
 # Python callable or importstring thereof
-# 
+#
 # To be called on a contents model prior to save.
-# 
+#
 # This can be used to process the structure, such as removing notebook outputs
 # or other side effects that should not be saved.
-# 
+#
 # It will be called as (all arguments passed by keyword)::
-# 
+#
 #     hook(path=path, model=model, contents_manager=self)
-# 
+#
 # - model: the model to be saved. Includes file contents.
 #   Modifying this dict will affect the file that is stored.
 # - path: the API path of the save destination
 # - contents_manager: this ContentsManager instance
 # c.ContentsManager.pre_save_hook = None
 
-# 
+#
 # c.ContentsManager.checkpoints_class = <class 'notebook.services.contents.checkpoints.Checkpoints'>
 
 # Glob patterns to hide in file and directory listings.
@@ -451,10 +474,10 @@
 # The base name used when creating untitled directories.
 # c.ContentsManager.untitled_directory = 'Untitled Folder'
 
-# 
+#
 # c.ContentsManager.checkpoints = traitlets.Undefined
 
-# 
+#
 # c.ContentsManager.checkpoints_kwargs = traitlets.Undefined
 
 #------------------------------------------------------------------------------
@@ -464,20 +487,20 @@
 # DEPRECATED, use post_save_hook
 # c.FileContentsManager.save_script = False
 
-# 
+#
 # c.FileContentsManager.root_dir = u''
 
 # Python callable or importstring thereof
-# 
+#
 # to be called on the path of a file just saved.
-# 
+#
 # This can be used to process the file on disk, such as converting the notebook
 # to a script or HTML via nbconvert.
-# 
+#
 # It will be called as (all arguments passed by keyword)::
-# 
+#
 #     hook(os_path=os_path, model=model, contents_manager=instance)
-# 
+#
 # - path: the filesystem path to the file just written - model: the model
 # representing the file - contents_manager: this ContentsManager instance
 # c.FileContentsManager.post_save_hook = None
@@ -511,6 +534,6 @@
 #------------------------------------------------------------------------------
 
 # Whitelist of allowed kernel names.
-# 
+#
 # By default, all installed kernels are allowed.
 # c.KernelSpecManager.whitelist = traitlets.Undefined
