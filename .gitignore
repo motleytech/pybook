@@ -6,3 +6,4 @@ venv/*
 .ipython/profile_default/security
 *.pyc
 setup/pwhash.py
+IPython-notebook-extensions/
