@@ -20,6 +20,8 @@ else:
 # install pandoc to export to pdf
 os.system("sudo apt-get -y install pandoc")
 
+os.system("/bin/bash -c 'cd %s; git clone https://github.com/ipython-contrib/IPython-notebook-extensions.git'" % (ROOT_DIR))
+
 # dependencies for scipy
 os.system("sudo apt-get -y install libamd2.2.0 libblas3gf libc6 libgcc1\
  libgfortran3 liblapack3gf libumfpack5.4.0 libstdc++6\

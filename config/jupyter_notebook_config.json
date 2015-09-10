@@ -1,0 +1,20 @@
+{
+  "Exporter": {
+    "preprocessors": [
+      "pre_codefolding.CodeFoldingPreprocessor",
+      "pre_pymarkdown.PyMarkdownPreprocessor"
+    ],
+    "template_path": [
+      "/home/nagarajan/.local/share/jupyter/templates"
+    ]
+  },
+  "NbConvertApp": {
+    "postprocessor_class": "post_embedhtml.EmbedPostProcessor"
+  },
+  "NotebookApp": {
+    "server_extensions": [
+      "nbextensions"
+    ]
+  },
+  "version": 1
+}
