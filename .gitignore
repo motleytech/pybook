@@ -2,5 +2,7 @@ venv/*
 .ipython/nbextensions
 .ipython/profile_pybook/history.sqlite
 .ipython/profile_pybook/security
+.ipython/profile_default/history.sqlite
+.ipython/profile_default/security
 *.pyc
 setup/pwhash.py

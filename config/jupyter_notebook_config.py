@@ -9,7 +9,7 @@ import sys
 import logging
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "../../"))
+ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "../"))
 
 
 #------------------------------------------------------------------------------
