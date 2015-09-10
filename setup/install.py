@@ -19,8 +19,11 @@ else:
 
 # install pandoc to export to pdf
 os.system("sudo apt-get -y install pandoc")
-
-os.system("/bin/bash -c 'cd %s; git clone https://github.com/ipython-contrib/IPython-notebook-extensions.git'" % (ROOT_DIR))
+os.system("cd /tmp; \
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
+tar -xzf install-tl-unx.tar.gz; \
+cd `tar -tzf install-tl-unx.tar.gz | sed -e 'N;s/^\(.*\).*\n\1.*$/\1\n\1/;D'` \
+sudo ./install-tl")
 
 # dependencies for scipy
 os.system("sudo apt-get -y install libamd2.2.0 libblas3gf libc6 libgcc1\
@@ -29,7 +32,6 @@ os.system("sudo apt-get -y install libamd2.2.0 libblas3gf libc6 libgcc1\
 
 # dependencies for matlab
 os.system("sudo apt-get -y install libfreetype6-dev libpng12-dev")
-
 
 # upgrade pip
 os.system("/bin/bash -c 'cd %s; source %s; pip install -U pip'" % (ROOT_DIR, "env.sh"))
@@ -40,5 +42,8 @@ os.system("/bin/bash -c 'cd %s; source %s; pip install distribute --upgrade'" %
 
 os.system("/bin/bash -c 'cd %s; source %s; pip install -r %s/setup/requirements.txt'" %
           (ROOT_DIR, "env.sh", ROOT_DIR))
+
+# extensions
+os.system("/bin/bash -c 'cd %s; git clone https://github.com/ipython-contrib/IPython-notebook-extensions.git'" % (ROOT_DIR))
 
 os.system("/bin/bash -c 'cd %s; source %s; cd IPython-notebook-extensions; python setup.py install'" % (ROOT_DIR, 'env.sh'))
