@@ -1,11 +1,10 @@
 {
   "load_extensions": {
-    "usability/runtools/main": true, 
-    "usability/execute_time/ExecuteTime": true, 
     "usability/latex_envs/latex_envs": true, 
     "config/config_menu/main": true, 
+    "usability/python-markdown/main": true, 
     "usability/search-replace/main": true, 
-    "usability/python-markdown/main": true
+    "usability/execute_time/ExecuteTime": true
   }, 
   "nbext_hide_incompat": false
 }
