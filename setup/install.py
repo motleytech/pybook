@@ -44,6 +44,6 @@ os.system("/bin/bash -c 'cd %s; source %s; pip install -r %s/setup/requirements.
           (ROOT_DIR, "env.sh", ROOT_DIR))
 
 # extensions
-os.system("/bin/bash -c 'cd %s; git clone https://github.com/ipython-contrib/IPython-notebook-extensions.git'" % (ROOT_DIR))
+os.system("/bin/bash -c 'cd %s; git clone https://github.com/motleytech/IPython-notebook-extensions.git'" % (ROOT_DIR))
 
 os.system("/bin/bash -c 'cd %s; source %s; cd IPython-notebook-extensions; python setup.py install'" % (ROOT_DIR, 'env.sh'))
