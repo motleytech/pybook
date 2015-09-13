@@ -1,0 +1,299 @@
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">pyvar1</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;1&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="s">&quot;too&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.45</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span>
+         <span class="s">&#39;third&#39;</span><span class="p">:</span> <span class="s">&quot;hello&quot;</span><span class="p">}</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="k">print</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pyvar1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&quot;1&quot;: 2, &quot;too&quot;: [&quot;1&quot;, 2, 3.45, [1, 22, 3]], &quot;third&quot;: &quot;hello&quot;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jsvar1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span>
+         <span class="s1">&#39;3&#39;</span><span class="o">:</span><span class="mf">4.5</span><span class="p">,</span>
+         <span class="s2">&quot;hello&quot;</span><span class="o">:</span> <span class="s1">&#39;world&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;list&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}</span>
+
+<span class="nx">nbvars</span><span class="p">.</span><span class="nx">variables</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">nbvars</span><span class="p">.</span><span class="nx">variables</span><span class="p">.</span><span class="nx">jsvar1</span> <span class="o">=</span> <span class="nx">jsvar1</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+'use strict';
+var jsvar1 = {'1':2,
+         '3':4.5,
+         "hello": 'world',
+         'list': [1,2,3]}
+
+nbvars.variables = {};
+nbvars.variables.jsvar1 = jsvar1;
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">elem</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+<span class="nx">nbvars</span><span class="p">.</span><span class="nx">toJs</span><span class="p">(</span><span class="s1">&#39;pyvar1&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span>
+    <span class="nx">nbvars</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">elem</span><span class="p">);</span>
+    <span class="nx">nbvars</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">result</span><span class="p">),</span> <span class="nb">window</span><span class="p">.</span><span class="nx">elem</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+window.elem = element;
+nbvars.toJs('pyvar1', function (res) {
+    var result = res;
+    nbvars.log(result, window.elem);
+    nbvars.log(typeof(result), window.elem);
+});
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">elem</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+<span class="nx">nbvars</span><span class="p">.</span><span class="nx">toPy</span><span class="p">(</span><span class="nx">nbvars</span><span class="p">.</span><span class="nx">variables</span><span class="p">.</span><span class="nx">jsvar1</span><span class="p">,</span> <span class="s1">&#39;jsvar1&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">nbvars</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">elem</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+window.elem = element;
+nbvars.toPy(nbvars.variables.jsvar1, 'jsvar1', function(res) {
+    nbvars.log("done", window.elem);
+});
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="k">print</span> <span class="n">jsvar1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&apos;1&apos;: 2, u&apos;3&apos;: 4.5, u&apos;list&apos;: [1, 2, 3], u&apos;hello&apos;: u&apos;world&apos;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<span class="nx">nbvars</span><span class="p">.</span><span class="nx">load</span><span class="p">([</span><span class="s1">&#39;/nbextensions/custom/custom.js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">lib</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lib</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+nbvars.load(['/nbextensions/custom/custom.js'], function (lib) {
+    console.log(lib);
+});
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">a</span> <span class="o">=</span> <span class="mf">1.25</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>a = 21.25</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s">&#39;{ &quot;hello&quot;: &quot;hello&quot; }&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&apos;hello&apos;: u&apos;hello&apos;} &lt;type &apos;dict&apos;&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">json</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
