@@ -1,7 +1,7 @@
 {
   "load_extensions": {
     "usability/execute_time/ExecuteTime": true, 
-    "usability/latex_envs/latex_envs": true, 
+    "usability/toggle_all_line_numbers/main": true, 
     "custom/custom": true, 
     "config/config_menu/main": true, 
     "usability/search-replace/main": true, 
