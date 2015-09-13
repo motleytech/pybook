@@ -1,10 +1,11 @@
 {
   "load_extensions": {
+    "usability/execute_time/ExecuteTime": true, 
     "usability/latex_envs/latex_envs": true, 
+    "custom/custom": true, 
     "config/config_menu/main": true, 
-    "usability/python-markdown/main": true, 
     "usability/search-replace/main": true, 
-    "usability/execute_time/ExecuteTime": true
+    "usability/python-markdown/main": true
   }, 
   "nbext_hide_incompat": false
 }
