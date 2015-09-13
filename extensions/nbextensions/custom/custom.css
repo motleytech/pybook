@@ -180,9 +180,11 @@ body {
 .notebook_app {
     background-color: #262931;
 }
-.notebook_app #header {
+
+/*.notebook_app #header {
     box-shadow: none !important;
-}
+}*/
+
 #notebook-container {
     padding: 15px;
     background-color: #262931;
@@ -195,11 +197,13 @@ body {
     position: relative;
     z-index: 100;
 }
+
 #header-container {
     padding-bottom: 5px;
-    display: none !important;
+    /*display: none !important;*/
     box-shadow: none;
 }
+
 #header .header-bar {
     background: #262931;
 }
@@ -207,6 +211,7 @@ body {
 /*div#maintoolbar {
     display: none !important;
 }*/
+
 /* text in output area (i.e. print some_list) */
 div.output_html {color: #1e2429;}
 
