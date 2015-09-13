@@ -17,7 +17,7 @@ define([
 
     var load_ipython_extension = function() {
         console.log("loaded custom.js file");
-        load_css("./custom.css")
+        load_css("/nbextensions/custom/custom.css")
     };
 
     var extension = {
