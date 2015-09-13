@@ -77,6 +77,15 @@ define([
             cb(lib);
         });
     };
+    
+    function log(mesg, elem) {
+        if (elem) {
+            elem.append("<p>" + mesg + "</p>");
+        } else {
+            console.log(mesg);
+        }
+    };
+    
 
     var load_ipython_extension = function() {
         console.log("loaded custom.js file");
@@ -89,6 +98,7 @@ define([
         window.nbvars['toPy'] = toPy;
         window.nbvars['toJs'] = toJs;
         window.nbvars['load'] = loadJs;
+        window.nbvars['log'] = log;
         
     };
 
