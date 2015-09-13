@@ -80,6 +80,9 @@ define([
     
     function log(mesg, elem) {
         if (elem) {
+            if (typeof(mesg) == object) {
+                mesg = JSON.stringfy(mesg);
+            }
             elem.append("<p>" + mesg + "</p>");
         } else {
             console.log(mesg);
