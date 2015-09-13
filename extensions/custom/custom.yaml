@@ -1,0 +1,8 @@
+Type: IPython Notebook Extension
+Name: Custom
+Description: Allows running custom javascript at notebook load.
+Link: README.md
+Icon: python-markdown.png
+Main: custom.js
+Compatibility: 4.x
+

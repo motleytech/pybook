@@ -5,7 +5,7 @@
       "pre_pymarkdown.PyMarkdownPreprocessor"
     ],
     "template_path": [
-      "/webserver/.local/share/jupyter/templates"
+      "/webserver/webcms/djcms/pybook/jupyter_data/templates"
     ]
   },
   "NbConvertApp": {
