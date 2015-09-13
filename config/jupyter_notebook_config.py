@@ -221,7 +221,7 @@ except:
 c.NotebookApp.password = passwordHash
 
 # extra paths to look for Javascript notebook extensions
-# c.NotebookApp.extra_nbextensions_path = traitlets.Undefined
+c.NotebookApp.extra_nbextensions_path = [os.path.join(ROOT_DIR, "extensions")]
 
 # Set the Access-Control-Allow-Credentials: true header
 # c.NotebookApp.allow_credentials = False
