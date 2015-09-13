@@ -203,9 +203,10 @@ body {
 #header .header-bar {
     background: #262931;
 }
-div#maintoolbar {
+
+/*div#maintoolbar {
     display: none !important;
-}
+}*/
 /* text in output area (i.e. print some_list) */
 div.output_html {color: #1e2429;}
 
