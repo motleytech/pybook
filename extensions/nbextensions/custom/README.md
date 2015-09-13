@@ -1,1 +1,3 @@
-Nothing here to see. Just a readme for custom.js.
+## Custom.js for notebook
+
+Defines `toPy`, `toJs` and `loadjs` methods.
