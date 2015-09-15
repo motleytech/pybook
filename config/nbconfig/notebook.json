@@ -4,7 +4,7 @@
     "usability/toggle_all_line_numbers/main": true, 
     "custom/custom": true, 
     "config/config_menu/main": true, 
-    "usability/search-replace/main": true, 
+    "usability/dragdrop/main": true, 
     "usability/python-markdown/main": true
   }, 
   "nbext_hide_incompat": false
