@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Python and D3</title>
+<title>Euler_Tools</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -171,654 +171,101 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">display</span>
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">require([&quot;//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js&quot;],</span>
-<span class="s">    function(d3) {</span>
-<span class="s">        window.d3 = d3;</span>
-<span class="s">        console.log(&quot;loaded d3&quot;)</span>
-<span class="s">    }</span>
-<span class="s">);</span>
-<span class="s">&quot;&quot;&quot;</span>
 
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">endTime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;Time = {etime}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">etime</span><span class="o">=</span><span class="p">(</span><span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">rv</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">primes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">primes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">primes</span> <span class="o">=</span> <span class="n">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="n">divisible</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pr</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="n">pr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">divisible</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="n">divisible</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="mi">999999999</span>
+        
+    <span class="k">yield</span> <span class="mi">2</span>
+    <span class="n">oddPrimes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">oddPrimes</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">x</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="n">limit</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">oddPrimes</span><span class="p">):</span>
+            <span class="n">oddPrimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">x</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">oddPrimes</span><span class="p">):</span>
+                <span class="n">oddPrimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">x</span>
+    <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">factorize</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="p">):</span>
+        <span class="n">facCount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">num</span> <span class="o">%</span> <span class="n">pr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">facCount</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">pr</span>
+
+        <span class="k">if</span> <span class="n">facCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pr</span><span class="p">,</span> <span class="n">facCount</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">factors</span>
+
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">product</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">nChooseR</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">r</span><span class="p">))</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-
-require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"],
-    function(d3) {
-        window.d3 = d3;
-        console.log("loaded d3")
-    }
-);
-
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">function d3_xy_chart() {</span>
-<span class="s">    var width = 640,  </span>
-<span class="s">        height = 480, </span>
-<span class="s">        xlabel = &quot;X Axis Label&quot;,</span>
-<span class="s">        ylabel = &quot;Y Axis Label&quot; ;</span>
-<span class="s">    </span>
-<span class="s">    function chart(selection) {</span>
-<span class="s">        selection.each(function(datasets) {</span>
-<span class="s">            //</span>
-<span class="s">            // Create the plot. </span>
-<span class="s">            //</span>
-<span class="s">            var margin = {top: 20, right: 80, bottom: 30, left: 50}, </span>
-<span class="s">                innerwidth = width - margin.left - margin.right,</span>
-<span class="s">                innerheight = height - margin.top - margin.bottom ;</span>
-<span class="s">            </span>
-<span class="s">            var x_scale = d3.scale.linear()</span>
-<span class="s">                .range([0, innerwidth])</span>
-<span class="s">                .domain([ d3.min(datasets, function(d) { return d3.min(d.x); }), </span>
-<span class="s">                          d3.max(datasets, function(d) { return d3.max(d.x); }) ]) ;</span>
-<span class="s">            </span>
-<span class="s">            var y_scale = d3.scale.linear()</span>
-<span class="s">                .range([innerheight, 0])</span>
-<span class="s">                .domain([ d3.min(datasets, function(d) { return d3.min(d.y); }),</span>
-<span class="s">                          d3.max(datasets, function(d) { return d3.max(d.y); }) ]) ;</span>
-
-<span class="s">            var color_scale = d3.scale.category10()</span>
-<span class="s">                .domain(d3.range(datasets.length)) ;</span>
-
-<span class="s">            var x_axis = d3.svg.axis()</span>
-<span class="s">                .scale(x_scale)</span>
-<span class="s">                .orient(&quot;bottom&quot;) ;</span>
-
-<span class="s">            var y_axis = d3.svg.axis()</span>
-<span class="s">                .scale(y_scale)</span>
-<span class="s">                .orient(&quot;left&quot;) ;</span>
-
-<span class="s">            var x_grid = d3.svg.axis()</span>
-<span class="s">                .scale(x_scale)</span>
-<span class="s">                .orient(&quot;bottom&quot;)</span>
-<span class="s">                .tickSize(-innerheight)</span>
-<span class="s">                .tickFormat(&quot;&quot;) ;</span>
-
-<span class="s">            var y_grid = d3.svg.axis()</span>
-<span class="s">                .scale(y_scale)</span>
-<span class="s">                .orient(&quot;left&quot;) </span>
-<span class="s">                .tickSize(-innerwidth)</span>
-<span class="s">                .tickFormat(&quot;&quot;) ;</span>
-
-<span class="s">            var draw_line = d3.svg.line()</span>
-<span class="s">                .interpolate(&quot;basis&quot;)</span>
-<span class="s">                .x(function(d) { return x_scale(d[0]); })</span>
-<span class="s">                .y(function(d) { return y_scale(d[1]); }) ;</span>
-
-<span class="s">            var svg = d3.select(this)</span>
-<span class="s">                .attr(&quot;width&quot;, width)</span>
-<span class="s">                .attr(&quot;height&quot;, height)</span>
-<span class="s">                .append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;) ;</span>
-<span class="s">            </span>
-<span class="s">            svg.append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;x grid&quot;)</span>
-<span class="s">                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + innerheight + &quot;)&quot;)</span>
-<span class="s">                .call(x_grid) ;</span>
-
-<span class="s">            svg.append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;y grid&quot;)</span>
-<span class="s">                .call(y_grid) ;</span>
-
-<span class="s">            svg.append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;x axis&quot;)</span>
-<span class="s">                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + innerheight + &quot;)&quot;) </span>
-<span class="s">                .call(x_axis)</span>
-<span class="s">                .append(&quot;text&quot;)</span>
-<span class="s">                .attr(&quot;dy&quot;, &quot;-.71em&quot;)</span>
-<span class="s">                .attr(&quot;x&quot;, innerwidth)</span>
-<span class="s">                .style(&quot;text-anchor&quot;, &quot;end&quot;)</span>
-<span class="s">                .text(xlabel) ;</span>
-<span class="s">            </span>
-<span class="s">            svg.append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;y axis&quot;)</span>
-<span class="s">                .call(y_axis)</span>
-<span class="s">                .append(&quot;text&quot;)</span>
-<span class="s">                .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)</span>
-<span class="s">                .attr(&quot;y&quot;, 6)</span>
-<span class="s">                .attr(&quot;dy&quot;, &quot;0.71em&quot;)</span>
-<span class="s">                .style(&quot;text-anchor&quot;, &quot;end&quot;)</span>
-<span class="s">                .text(ylabel) ;</span>
-
-<span class="s">            var data_lines = svg.selectAll(&quot;.d3_xy_chart_line&quot;)</span>
-<span class="s">                .data(datasets.map(function(d) {return d3.zip(d.x, d.y);}))</span>
-<span class="s">                .enter().append(&quot;g&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;.d3_xy_chart_line&quot;) ;</span>
-<span class="s">            </span>
-<span class="s">            data_lines.append(&quot;path&quot;)</span>
-<span class="s">                .attr(&quot;class&quot;, &quot;line&quot;)</span>
-<span class="s">                .attr(&quot;d&quot;, function(d) {return draw_line(d); })</span>
-<span class="s">                .attr(&quot;stroke&quot;, function(_, i) {return color_scale(i);}) ;</span>
-<span class="s">            </span>
-<span class="s">            data_lines.append(&quot;text&quot;)</span>
-<span class="s">                .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; }) </span>
-<span class="s">                .attr(&quot;transform&quot;, function(d) { </span>
-<span class="s">                    return ( &quot;translate(&quot; + x_scale(d.final[0]) + &quot;,&quot; + </span>
-<span class="s">                             y_scale(d.final[1]) + &quot;)&quot; ) ; })</span>
-<span class="s">                .attr(&quot;x&quot;, 3)</span>
-<span class="s">                .attr(&quot;dy&quot;, &quot;.35em&quot;)</span>
-<span class="s">                .attr(&quot;fill&quot;, function(_, i) { return color_scale(i); })</span>
-<span class="s">                .text(function(d) { return d.name; }) ;</span>
-
-<span class="s">        }) ;</span>
-<span class="s">    }</span>
-
-<span class="s">    chart.width = function(value) {</span>
-<span class="s">        if (!arguments.length) return width;</span>
-<span class="s">        width = value;</span>
-<span class="s">        return chart;</span>
-<span class="s">    };</span>
-
-<span class="s">    chart.height = function(value) {</span>
-<span class="s">        if (!arguments.length) return height;</span>
-<span class="s">        height = value;</span>
-<span class="s">        return chart;</span>
-<span class="s">    };</span>
-
-<span class="s">    chart.xlabel = function(value) {</span>
-<span class="s">        if(!arguments.length) return xlabel ;</span>
-<span class="s">        xlabel = value ;</span>
-<span class="s">        return chart ;</span>
-<span class="s">    } ;</span>
-
-<span class="s">    chart.ylabel = function(value) {</span>
-<span class="s">        if(!arguments.length) return ylabel ;</span>
-<span class="s">        ylabel = value ;</span>
-<span class="s">        return chart ;</span>
-<span class="s">    } ;</span>
-
-<span class="s">    return chart;</span>
-<span class="s">}</span>
-
-<span class="s">d3.my_d3_xy_chart = d3_xy_chart;</span>
-<span class="s">&quot;&quot;&quot;</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-
-function d3_xy_chart() {
-    var width = 640,  
-        height = 480, 
-        xlabel = "X Axis Label",
-        ylabel = "Y Axis Label" ;
-    
-    function chart(selection) {
-        selection.each(function(datasets) {
-            //
-            // Create the plot. 
-            //
-            var margin = {top: 20, right: 80, bottom: 30, left: 50}, 
-                innerwidth = width - margin.left - margin.right,
-                innerheight = height - margin.top - margin.bottom ;
-            
-            var x_scale = d3.scale.linear()
-                .range([0, innerwidth])
-                .domain([ d3.min(datasets, function(d) { return d3.min(d.x); }), 
-                          d3.max(datasets, function(d) { return d3.max(d.x); }) ]) ;
-            
-            var y_scale = d3.scale.linear()
-                .range([innerheight, 0])
-                .domain([ d3.min(datasets, function(d) { return d3.min(d.y); }),
-                          d3.max(datasets, function(d) { return d3.max(d.y); }) ]) ;
-
-            var color_scale = d3.scale.category10()
-                .domain(d3.range(datasets.length)) ;
-
-            var x_axis = d3.svg.axis()
-                .scale(x_scale)
-                .orient("bottom") ;
-
-            var y_axis = d3.svg.axis()
-                .scale(y_scale)
-                .orient("left") ;
-
-            var x_grid = d3.svg.axis()
-                .scale(x_scale)
-                .orient("bottom")
-                .tickSize(-innerheight)
-                .tickFormat("") ;
-
-            var y_grid = d3.svg.axis()
-                .scale(y_scale)
-                .orient("left") 
-                .tickSize(-innerwidth)
-                .tickFormat("") ;
-
-            var draw_line = d3.svg.line()
-                .interpolate("basis")
-                .x(function(d) { return x_scale(d[0]); })
-                .y(function(d) { return y_scale(d[1]); }) ;
-
-            var svg = d3.select(this)
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")") ;
-            
-            svg.append("g")
-                .attr("class", "x grid")
-                .attr("transform", "translate(0," + innerheight + ")")
-                .call(x_grid) ;
-
-            svg.append("g")
-                .attr("class", "y grid")
-                .call(y_grid) ;
-
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + innerheight + ")") 
-                .call(x_axis)
-                .append("text")
-                .attr("dy", "-.71em")
-                .attr("x", innerwidth)
-                .style("text-anchor", "end")
-                .text(xlabel) ;
-            
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(y_axis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .style("text-anchor", "end")
-                .text(ylabel) ;
-
-            var data_lines = svg.selectAll(".d3_xy_chart_line")
-                .data(datasets.map(function(d) {return d3.zip(d.x, d.y);}))
-                .enter().append("g")
-                .attr("class", ".d3_xy_chart_line") ;
-            
-            data_lines.append("path")
-                .attr("class", "line")
-                .attr("d", function(d) {return draw_line(d); })
-                .attr("stroke", function(_, i) {return color_scale(i);}) ;
-            
-            data_lines.append("text")
-                .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; }) 
-                .attr("transform", function(d) { 
-                    return ( "translate(" + x_scale(d.final[0]) + "," + 
-                             y_scale(d.final[1]) + ")" ) ; })
-                .attr("x", 3)
-                .attr("dy", ".35em")
-                .attr("fill", function(_, i) { return color_scale(i); })
-                .text(function(d) { return d.name; }) ;
-
-        }) ;
-    }
-
-    chart.width = function(value) {
-        if (!arguments.length) return width;
-        width = value;
-        return chart;
-    };
-
-    chart.height = function(value) {
-        if (!arguments.length) return height;
-        height = value;
-        return chart;
-    };
-
-    chart.xlabel = function(value) {
-        if(!arguments.length) return xlabel ;
-        xlabel = value ;
-        return chart ;
-    } ;
-
-    chart.ylabel = function(value) {
-        if(!arguments.length) return ylabel ;
-        ylabel = value ;
-        return chart ;
-    } ;
-
-    return chart;
-}
-
-d3.my_d3_xy_chart = d3_xy_chart;
-
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
-
-<span class="n">style</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">&lt;style&gt;</span>
-
-<span class="s">body {</span>
-<span class="s">  font: 12px sans-serif;</span>
-<span class="s">}</span>
-
-<span class="s">.axis path,</span>
-<span class="s">.axis line {</span>
-<span class="s">  fill: none;</span>
-<span class="s">  stroke: #000;</span>
-<span class="s">  shape-rendering: crispEdges;</span>
-<span class="s">}</span>
-
-<span class="s">.grid path,</span>
-<span class="s">.grid line {</span>
-<span class="s">  fill: none;</span>
-<span class="s">  stroke: rgba(0, 0, 0, 0.25);</span>
-<span class="s">  shape-rendering: crispEdges;</span>
-<span class="s">}</span>
-
-<span class="s">.x.axis path {</span>
-<span class="s">  display: none;</span>
-<span class="s">}</span>
-
-<span class="s">.line {</span>
-<span class="s">  fill: none;</span>
-<span class="s">  stroke-width: 2.5px;</span>
-<span class="s">}</span>
-
-<span class="s">&lt;/style&gt;</span>
-
-<span class="s">&quot;&quot;&quot;</span>
-
-<span class="n">HTML</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-
-<style>
-
-body {
-  font: 12px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.grid path,
-.grid line {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.25);
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.line {
-  fill: none;
-  stroke-width: 2.5px;
-}
-
-</style>
-
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">yval1</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">yval2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
-<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">nbvars.toJs(&quot;yval1&quot;, function (res) { nbvars.yval1 = res; })</span>
-<span class="s">nbvars.toJs(&quot;yval2&quot;, function (res) { nbvars.yval2 = res; })</span>
-<span class="s">&quot;&quot;&quot;</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-
-nbvars.toJs("yval1", function (res) { nbvars.yval1 = res; })
-nbvars.toJs("yval2", function (res) { nbvars.yval2 = res; })
-
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
-
-<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">var data = [ { label: &quot;Data Set 1&quot;, </span>
-<span class="s">               x: [0, 1, 2, 3, 4], </span>
-<span class="s">               y: nbvars.yval1 }, </span>
-<span class="s">             { label: &quot;Data Set 2&quot;, </span>
-<span class="s">               x: [0, 1, 2, 3, 4], </span>
-<span class="s">               y: nbvars.yval2 } ];</span>
-
-<span class="s">var xy_chart = d3.my_d3_xy_chart()</span>
-<span class="s">    .width(600)</span>
-<span class="s">    .height(200)</span>
-<span class="s">    .xlabel(&quot;X Axis&quot;)</span>
-<span class="s">    .ylabel(&quot;Y Axis&quot;);</span>
-
-<span class="s">$(&#39;#d3-chart&#39;).empty();</span>
-
-<span class="s">var svg = d3.select(&quot;#d3-chart&quot;).append(&quot;svg&quot;)</span>
-<span class="s">    .datum(data)</span>
-<span class="s">    .call(xy_chart);</span>
-<span class="s">&quot;&quot;&quot;</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-
-var data = [ { label: "Data Set 1", 
-               x: [0, 1, 2, 3, 4], 
-               y: nbvars.yval1 }, 
-             { label: "Data Set 2", 
-               x: [0, 1, 2, 3, 4], 
-               y: nbvars.yval2 } ];
-
-var xy_chart = d3.my_d3_xy_chart()
-    .width(600)
-    .height(200)
-    .xlabel("X Axis")
-    .ylabel("Y Axis");
-
-$('#d3-chart').empty();
-
-var svg = d3.select("#d3-chart").append("svg")
-    .datum(data)
-    .call(xy_chart);
-
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">element</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;&lt;div id=d3-chart&gt;&lt;/div&gt;&quot;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-element.append("<div id=d3-chart></div>")
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
-
-<span class="nx">nbvars</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval1</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span>
-<span class="nx">nbvars</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval2</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-
-nbvars.log(nbvars.yval1, element)
-nbvars.log(nbvars.yval2, element)
-</script>
-</div>
-
-</div>
-
 </div>
 </div>
 

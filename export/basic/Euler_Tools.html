@@ -1,0 +1,115 @@
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">endTime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;Time = {etime}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">etime</span><span class="o">=</span><span class="p">(</span><span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">rv</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">primes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">primes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">primes</span> <span class="o">=</span> <span class="n">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="n">divisible</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pr</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="n">pr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">divisible</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="n">divisible</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="mi">999999999</span>
+        
+    <span class="k">yield</span> <span class="mi">2</span>
+    <span class="n">oddPrimes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">oddPrimes</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">x</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="n">limit</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">oddPrimes</span><span class="p">):</span>
+            <span class="n">oddPrimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">x</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">isPrime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">oddPrimes</span><span class="p">):</span>
+                <span class="n">oddPrimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">x</span>
+    <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">factorize</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">genPrimes</span><span class="p">(</span><span class="n">limit</span><span class="p">):</span>
+        <span class="n">facCount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">num</span> <span class="o">%</span> <span class="n">pr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">facCount</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">pr</span>
+
+        <span class="k">if</span> <span class="n">facCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pr</span><span class="p">,</span> <span class="n">facCount</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">num</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">factors</span>
+
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">product</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">nChooseR</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>

@@ -4,14 +4,19 @@
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">display</span>
 
-<span class="nx">require</span><span class="p">([</span><span class="s2">&quot;//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js&quot;</span><span class="p">],</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">d3</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nb">window</span><span class="p">.</span><span class="nx">d3</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;loaded d3&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">);</span>
+<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">require([&quot;//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js&quot;],</span>
+<span class="s">    function(d3) {</span>
+<span class="s">        window.d3 = d3;</span>
+<span class="s">        console.log(&quot;loaded d3&quot;)</span>
+<span class="s">    }</span>
+<span class="s">);</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -49,147 +54,149 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"],
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<div class=" highlight hl-ipython2"><pre><span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">function d3_xy_chart() {</span>
+<span class="s">    var width = 640,  </span>
+<span class="s">        height = 480, </span>
+<span class="s">        xlabel = &quot;X Axis Label&quot;,</span>
+<span class="s">        ylabel = &quot;Y Axis Label&quot; ;</span>
+<span class="s">    </span>
+<span class="s">    function chart(selection) {</span>
+<span class="s">        selection.each(function(datasets) {</span>
+<span class="s">            //</span>
+<span class="s">            // Create the plot. </span>
+<span class="s">            //</span>
+<span class="s">            var margin = {top: 20, right: 80, bottom: 30, left: 50}, </span>
+<span class="s">                innerwidth = width - margin.left - margin.right,</span>
+<span class="s">                innerheight = height - margin.top - margin.bottom ;</span>
+<span class="s">            </span>
+<span class="s">            var x_scale = d3.scale.linear()</span>
+<span class="s">                .range([0, innerwidth])</span>
+<span class="s">                .domain([ d3.min(datasets, function(d) { return d3.min(d.x); }), </span>
+<span class="s">                          d3.max(datasets, function(d) { return d3.max(d.x); }) ]) ;</span>
+<span class="s">            </span>
+<span class="s">            var y_scale = d3.scale.linear()</span>
+<span class="s">                .range([innerheight, 0])</span>
+<span class="s">                .domain([ d3.min(datasets, function(d) { return d3.min(d.y); }),</span>
+<span class="s">                          d3.max(datasets, function(d) { return d3.max(d.y); }) ]) ;</span>
 
-<span class="kd">function</span> <span class="nx">d3_xy_chart</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">width</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span>  
-        <span class="nx">height</span> <span class="o">=</span> <span class="mi">480</span><span class="p">,</span> 
-        <span class="nx">xlabel</span> <span class="o">=</span> <span class="s2">&quot;X Axis Label&quot;</span><span class="p">,</span>
-        <span class="nx">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Y Axis Label&quot;</span> <span class="p">;</span>
-    
-    <span class="kd">function</span> <span class="nx">chart</span><span class="p">(</span><span class="nx">selection</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">selection</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">datasets</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c1">//</span>
-            <span class="c1">// Create the plot. </span>
-            <span class="c1">//</span>
-            <span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="p">{</span><span class="nx">top</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">right</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span> <span class="nx">bottom</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="nx">left</span><span class="o">:</span> <span class="mi">50</span><span class="p">},</span> 
-                <span class="nx">innerwidth</span> <span class="o">=</span> <span class="nx">width</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span>
-                <span class="nx">innerheight</span> <span class="o">=</span> <span class="nx">height</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span> <span class="p">;</span>
-            
-            <span class="kd">var</span> <span class="nx">x_scale</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nx">innerwidth</span><span class="p">])</span>
-                <span class="p">.</span><span class="nx">domain</span><span class="p">([</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">datasets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="p">}),</span> 
-                          <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">datasets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span> <span class="p">})</span> <span class="p">])</span> <span class="p">;</span>
-            
-            <span class="kd">var</span> <span class="nx">y_scale</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="nx">innerheight</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-                <span class="p">.</span><span class="nx">domain</span><span class="p">([</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">datasets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span> <span class="p">}),</span>
-                          <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">datasets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span> <span class="p">})</span> <span class="p">])</span> <span class="p">;</span>
+<span class="s">            var color_scale = d3.scale.category10()</span>
+<span class="s">                .domain(d3.range(datasets.length)) ;</span>
 
-            <span class="kd">var</span> <span class="nx">color_scale</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">category10</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">range</span><span class="p">(</span><span class="nx">datasets</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span> <span class="p">;</span>
+<span class="s">            var x_axis = d3.svg.axis()</span>
+<span class="s">                .scale(x_scale)</span>
+<span class="s">                .orient(&quot;bottom&quot;) ;</span>
 
-            <span class="kd">var</span> <span class="nx">x_axis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x_scale</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            var y_axis = d3.svg.axis()</span>
+<span class="s">                .scale(y_scale)</span>
+<span class="s">                .orient(&quot;left&quot;) ;</span>
 
-            <span class="kd">var</span> <span class="nx">y_axis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y_scale</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            var x_grid = d3.svg.axis()</span>
+<span class="s">                .scale(x_scale)</span>
+<span class="s">                .orient(&quot;bottom&quot;)</span>
+<span class="s">                .tickSize(-innerheight)</span>
+<span class="s">                .tickFormat(&quot;&quot;) ;</span>
 
-            <span class="kd">var</span> <span class="nx">x_grid</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x_scale</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">tickSize</span><span class="p">(</span><span class="o">-</span><span class="nx">innerheight</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            var y_grid = d3.svg.axis()</span>
+<span class="s">                .scale(y_scale)</span>
+<span class="s">                .orient(&quot;left&quot;) </span>
+<span class="s">                .tickSize(-innerwidth)</span>
+<span class="s">                .tickFormat(&quot;&quot;) ;</span>
 
-            <span class="kd">var</span> <span class="nx">y_grid</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y_scale</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> 
-                <span class="p">.</span><span class="nx">tickSize</span><span class="p">(</span><span class="o">-</span><span class="nx">innerwidth</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            var draw_line = d3.svg.line()</span>
+<span class="s">                .interpolate(&quot;basis&quot;)</span>
+<span class="s">                .x(function(d) { return x_scale(d[0]); })</span>
+<span class="s">                .y(function(d) { return y_scale(d[1]); }) ;</span>
 
-            <span class="kd">var</span> <span class="nx">draw_line</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">line</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">interpolate</span><span class="p">(</span><span class="s2">&quot;basis&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x_scale</span><span class="p">(</span><span class="nx">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="p">})</span>
-                <span class="p">.</span><span class="nx">y</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">y_scale</span><span class="p">(</span><span class="nx">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="p">})</span> <span class="p">;</span>
+<span class="s">            var svg = d3.select(this)</span>
+<span class="s">                .attr(&quot;width&quot;, width)</span>
+<span class="s">                .attr(&quot;height&quot;, height)</span>
+<span class="s">                .append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;) ;</span>
+<span class="s">            </span>
+<span class="s">            svg.append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;x grid&quot;)</span>
+<span class="s">                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + innerheight + &quot;)&quot;)</span>
+<span class="s">                .call(x_grid) ;</span>
 
-            <span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="nx">width</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;translate(&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span> <span class="p">;</span>
-            
-            <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;x grid&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;translate(0,&quot;</span> <span class="o">+</span> <span class="nx">innerheight</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">x_grid</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            svg.append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;y grid&quot;)</span>
+<span class="s">                .call(y_grid) ;</span>
 
-            <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;y grid&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">y_grid</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            svg.append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;x axis&quot;)</span>
+<span class="s">                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + innerheight + &quot;)&quot;) </span>
+<span class="s">                .call(x_axis)</span>
+<span class="s">                .append(&quot;text&quot;)</span>
+<span class="s">                .attr(&quot;dy&quot;, &quot;-.71em&quot;)</span>
+<span class="s">                .attr(&quot;x&quot;, innerwidth)</span>
+<span class="s">                .style(&quot;text-anchor&quot;, &quot;end&quot;)</span>
+<span class="s">                .text(xlabel) ;</span>
+<span class="s">            </span>
+<span class="s">            svg.append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;y axis&quot;)</span>
+<span class="s">                .call(y_axis)</span>
+<span class="s">                .append(&quot;text&quot;)</span>
+<span class="s">                .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)</span>
+<span class="s">                .attr(&quot;y&quot;, 6)</span>
+<span class="s">                .attr(&quot;dy&quot;, &quot;0.71em&quot;)</span>
+<span class="s">                .style(&quot;text-anchor&quot;, &quot;end&quot;)</span>
+<span class="s">                .text(ylabel) ;</span>
 
-            <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;x axis&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;translate(0,&quot;</span> <span class="o">+</span> <span class="nx">innerheight</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span> 
-                <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">x_axis</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;dy&quot;</span><span class="p">,</span> <span class="s2">&quot;-.71em&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="nx">innerwidth</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;text-anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">xlabel</span><span class="p">)</span> <span class="p">;</span>
-            
-            <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;y axis&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">y_axis</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate(-90)&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;dy&quot;</span><span class="p">,</span> <span class="s2">&quot;0.71em&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;text-anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">ylabel</span><span class="p">)</span> <span class="p">;</span>
+<span class="s">            var data_lines = svg.selectAll(&quot;.d3_xy_chart_line&quot;)</span>
+<span class="s">                .data(datasets.map(function(d) {return d3.zip(d.x, d.y);}))</span>
+<span class="s">                .enter().append(&quot;g&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;.d3_xy_chart_line&quot;) ;</span>
+<span class="s">            </span>
+<span class="s">            data_lines.append(&quot;path&quot;)</span>
+<span class="s">                .attr(&quot;class&quot;, &quot;line&quot;)</span>
+<span class="s">                .attr(&quot;d&quot;, function(d) {return draw_line(d); })</span>
+<span class="s">                .attr(&quot;stroke&quot;, function(_, i) {return color_scale(i);}) ;</span>
+<span class="s">            </span>
+<span class="s">            data_lines.append(&quot;text&quot;)</span>
+<span class="s">                .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; }) </span>
+<span class="s">                .attr(&quot;transform&quot;, function(d) { </span>
+<span class="s">                    return ( &quot;translate(&quot; + x_scale(d.final[0]) + &quot;,&quot; + </span>
+<span class="s">                             y_scale(d.final[1]) + &quot;)&quot; ) ; })</span>
+<span class="s">                .attr(&quot;x&quot;, 3)</span>
+<span class="s">                .attr(&quot;dy&quot;, &quot;.35em&quot;)</span>
+<span class="s">                .attr(&quot;fill&quot;, function(_, i) { return color_scale(i); })</span>
+<span class="s">                .text(function(d) { return d.name; }) ;</span>
 
-            <span class="kd">var</span> <span class="nx">data_lines</span> <span class="o">=</span> <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.d3_xy_chart_line&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">datasets</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">zip</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">);}))</span>
-                <span class="p">.</span><span class="nx">enter</span><span class="p">().</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;.d3_xy_chart_line&quot;</span><span class="p">)</span> <span class="p">;</span>
-            
-            <span class="nx">data_lines</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">draw_line</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span> <span class="p">})</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;stroke&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">color_scale</span><span class="p">(</span><span class="nx">i</span><span class="p">);})</span> <span class="p">;</span>
-            
-            <span class="nx">data_lines</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">datum</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="nx">datasets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">label</span><span class="p">,</span> <span class="kr">final</span><span class="o">:</span> <span class="nx">d</span><span class="p">[</span><span class="nx">d</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]};</span> <span class="p">})</span> 
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
-                    <span class="k">return</span> <span class="p">(</span> <span class="s2">&quot;translate(&quot;</span> <span class="o">+</span> <span class="nx">x_scale</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="kr">final</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> 
-                             <span class="nx">y_scale</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="kr">final</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span> <span class="p">)</span> <span class="p">;</span> <span class="p">})</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;dy&quot;</span><span class="p">,</span> <span class="s2">&quot;.35em&quot;</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">color_scale</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="p">})</span>
-                <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span> <span class="p">})</span> <span class="p">;</span>
+<span class="s">        }) ;</span>
+<span class="s">    }</span>
 
-        <span class="p">})</span> <span class="p">;</span>
-    <span class="p">}</span>
+<span class="s">    chart.width = function(value) {</span>
+<span class="s">        if (!arguments.length) return width;</span>
+<span class="s">        width = value;</span>
+<span class="s">        return chart;</span>
+<span class="s">    };</span>
 
-    <span class="nx">chart</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">width</span><span class="p">;</span>
-        <span class="nx">width</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">chart</span><span class="p">;</span>
-    <span class="p">};</span>
+<span class="s">    chart.height = function(value) {</span>
+<span class="s">        if (!arguments.length) return height;</span>
+<span class="s">        height = value;</span>
+<span class="s">        return chart;</span>
+<span class="s">    };</span>
 
-    <span class="nx">chart</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">height</span><span class="p">;</span>
-        <span class="nx">height</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">chart</span><span class="p">;</span>
-    <span class="p">};</span>
+<span class="s">    chart.xlabel = function(value) {</span>
+<span class="s">        if(!arguments.length) return xlabel ;</span>
+<span class="s">        xlabel = value ;</span>
+<span class="s">        return chart ;</span>
+<span class="s">    } ;</span>
 
-    <span class="nx">chart</span><span class="p">.</span><span class="nx">xlabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">xlabel</span> <span class="p">;</span>
-        <span class="nx">xlabel</span> <span class="o">=</span> <span class="nx">value</span> <span class="p">;</span>
-        <span class="k">return</span> <span class="nx">chart</span> <span class="p">;</span>
-    <span class="p">}</span> <span class="p">;</span>
+<span class="s">    chart.ylabel = function(value) {</span>
+<span class="s">        if(!arguments.length) return ylabel ;</span>
+<span class="s">        ylabel = value ;</span>
+<span class="s">        return chart ;</span>
+<span class="s">    } ;</span>
 
-    <span class="nx">chart</span><span class="p">.</span><span class="nx">ylabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">ylabel</span> <span class="p">;</span>
-        <span class="nx">ylabel</span> <span class="o">=</span> <span class="nx">value</span> <span class="p">;</span>
-        <span class="k">return</span> <span class="nx">chart</span> <span class="p">;</span>
-    <span class="p">}</span> <span class="p">;</span>
+<span class="s">    return chart;</span>
+<span class="s">}</span>
 
-    <span class="k">return</span> <span class="nx">chart</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="s">d3.my_d3_xy_chart = d3_xy_chart;</span>
+<span class="s">&quot;&quot;&quot;</span>
 
-<span class="nx">d3</span><span class="p">.</span><span class="nx">my_d3_xy_chart</span> <span class="o">=</span> <span class="nx">d3_xy_chart</span><span class="p">;</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -345,6 +352,7 @@ function d3_xy_chart() {
 }
 
 d3.my_d3_xy_chart = d3_xy_chart;
+
 </script>
 </div>
 
@@ -466,12 +474,16 @@ body {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">nbvars</span><span class="p">.</span><span class="nx">toJs</span><span class="p">(</span><span class="s2">&quot;yval1&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span> <span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval1</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span> <span class="p">})</span>
-<span class="nx">nbvars</span><span class="p">.</span><span class="nx">toJs</span><span class="p">(</span><span class="s2">&quot;yval2&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span> <span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval2</span> <span class="o">=</span> <span class="nx">res</span><span class="p">;</span> <span class="p">})</span>
+<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
+<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">nbvars.toJs(&quot;yval1&quot;, function (res) { nbvars.yval1 = res; })</span>
+<span class="s">nbvars.toJs(&quot;yval2&quot;, function (res) { nbvars.yval2 = res; })</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -487,8 +499,10 @@ body {
 
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
+
 nbvars.toJs("yval1", function (res) { nbvars.yval1 = res; })
 nbvars.toJs("yval2", function (res) { nbvars.yval2 = res; })
+
 </script>
 </div>
 
@@ -500,29 +514,33 @@ nbvars.toJs("yval2", function (res) { nbvars.yval2 = res; })
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="nx">javascript</span>
+<div class=" highlight hl-ipython2"><pre><span class="c"># %%javascript</span>
 
-<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span> <span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;Data Set 1&quot;</span><span class="p">,</span> 
-               <span class="nx">x</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
-               <span class="nx">y</span><span class="o">:</span> <span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval1</span> <span class="p">},</span> 
-             <span class="p">{</span> <span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;Data Set 2&quot;</span><span class="p">,</span> 
-               <span class="nx">x</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
-               <span class="nx">y</span><span class="o">:</span> <span class="nx">nbvars</span><span class="p">.</span><span class="nx">yval2</span> <span class="p">}</span> <span class="p">];</span>
+<span class="n">js</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">var data = [ { label: &quot;Data Set 1&quot;, </span>
+<span class="s">               x: [0, 1, 2, 3, 4], </span>
+<span class="s">               y: nbvars.yval1 }, </span>
+<span class="s">             { label: &quot;Data Set 2&quot;, </span>
+<span class="s">               x: [0, 1, 2, 3, 4], </span>
+<span class="s">               y: nbvars.yval2 } ];</span>
 
-<span class="kd">var</span> <span class="nx">xy_chart</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">my_d3_xy_chart</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">xlabel</span><span class="p">(</span><span class="s2">&quot;X Axis&quot;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">ylabel</span><span class="p">(</span><span class="s2">&quot;Y Axis&quot;</span><span class="p">);</span>
+<span class="s">var xy_chart = d3.my_d3_xy_chart()</span>
+<span class="s">    .width(600)</span>
+<span class="s">    .height(200)</span>
+<span class="s">    .xlabel(&quot;X Axis&quot;)</span>
+<span class="s">    .ylabel(&quot;Y Axis&quot;);</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#d3-chart&#39;</span><span class="p">).</span><span class="nx">empty</span><span class="p">();</span>
+<span class="s">$(&#39;#d3-chart&#39;).empty();</span>
 
-<span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;#d3-chart&quot;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">datum</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">xy_chart</span><span class="p">);</span>
+<span class="s">var svg = d3.select(&quot;#d3-chart&quot;).append(&quot;svg&quot;)</span>
+<span class="s">    .datum(data)</span>
+<span class="s">    .call(xy_chart);</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">js</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -557,6 +575,7 @@ $('#d3-chart').empty();
 var svg = d3.select("#d3-chart").append("svg")
     .datum(data)
     .call(xy_chart);
+
 </script>
 </div>
 
