@@ -22,10 +22,9 @@ def execute_notebook(nbfile, name=None):
             if cell.cell_type != 'code':
                 continue
             ip.run_cell(cell.input)
-            print ".",
     finally:
         __name__ = old_name
-        print " Finished."
+        print "Finished importing."
 
     return
 
