@@ -4,6 +4,7 @@ from pprint import pprint as pp
 from time import time
 
 def execute_notebook(nbfile, name=None):
+    print "Importing ipynb file : {}".format(nbfile)
     global __name__
     with io.open(nbfile) as f:
         nb = current.read(f, 'json')
@@ -21,8 +22,10 @@ def execute_notebook(nbfile, name=None):
             if cell.cell_type != 'code':
                 continue
             ip.run_cell(cell.input)
+            print ".",
     finally:
         __name__ = old_name
+        print " Finished."
 
     return
 
@@ -46,4 +49,3 @@ gl = globals()
 gl['execute_notebook'] = execute_notebook
 gl['pp'] = pp
 gl['timeit'] = timeit
-
