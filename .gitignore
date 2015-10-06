@@ -8,4 +8,4 @@ venv/*
 setup/pwhash.py
 IPython-notebook-extensions/
 jupyter_data
-
+books/.ipynb_checkpoints
