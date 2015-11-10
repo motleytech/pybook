@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source /webserver/webcms/djcms/pybook/venv35/bin/activate
+python3.5 "$@"

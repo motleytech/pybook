@@ -1,0 +1,14 @@
+{
+    "display_name": "Python 3.5",
+    "language": "python",
+    "argv": [
+        "/webserver/webcms/djcms/pybook/v35python",
+        "-c", "from ipykernel.kernelapp import main; main()",
+        "-f", "{connection_file}"
+    ],
+    "codemirror_mode": {
+        "version": 2,
+        "name": "ipython"
+    }
+}
+
