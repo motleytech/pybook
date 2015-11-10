@@ -4,9 +4,11 @@ venv/*
 .ipython/profile_pybook/security
 .ipython/profile_default/history.sqlite
 .ipython/profile_default/security
+.ipython/metakernel
 *.pyc
 setup/pwhash.py
 IPython-notebook-extensions/
 books/.ipynb_checkpoints
 jupyter_data
 venv35
+more_kernels
