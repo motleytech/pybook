@@ -5,7 +5,6 @@
     "custom/custom": true, 
     "config/config_menu/main": true, 
     "usability/dragdrop/main": true, 
-    "usability/search-replace/main": true, 
     "usability/python-markdown/main": true
   }, 
   "toggle_all_linenumbers_hotkey": "Alt-n", 
